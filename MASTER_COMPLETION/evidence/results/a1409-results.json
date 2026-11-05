@@ -1,0 +1,47 @@
+{
+  "source": "independent jsdom execution of lab/dashboard.html",
+  "real_network_requests": 0,
+  "javascript_errors": [],
+  "rendered_health_rows": [
+    [
+      "synthet…nt-ok",
+      "Healthy",
+      "1/1/1970, 12:00:00 AM",
+      "fixture: 1970 observation, never refreshed"
+    ],
+    [
+      "synthet…sh-ok",
+      "Healthy",
+      "11/5/2026, 12:50:00 PM",
+      "fixture"
+    ],
+    [
+      "synthet…e-bad",
+      "Attention",
+      "11/5/2026, 12:50:00 PM",
+      "fixture"
+    ],
+    [
+      "No records yet. No synthetic trades or performance have been inserted."
+    ],
+    [
+      "No records yet. No synthetic trades or performance have been inserted."
+    ],
+    [
+      "No records yet. No synthetic trades or performance have been inserted."
+    ],
+    [
+      "No records yet. No synthetic trades or performance have been inserted."
+    ],
+    [
+      "No records yet. No synthetic trades or performance have been inserted."
+    ]
+  ],
+  "ancient_row_state_label": "Healthy",
+  "ancient_row_last_observed": "1/1/1970, 12:00:00 AM",
+  "healthy_label_occurrences": 3,
+  "stale_rendered_healthy": true,
+  "forward_validation_ready": false,
+  "last_warning": "Token-finality settlements are supported; source merges/conversions quarantine monitoring rather than fabricate trades.",
+  "defect_reproduced": true
+}

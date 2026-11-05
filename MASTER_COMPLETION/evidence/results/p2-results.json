@@ -1,0 +1,318 @@
+[
+  {
+    "case": "A14-03/a single-sided SPLIT accepted (archived)",
+    "observed": {
+      "events": [
+        {
+          "state": "applied",
+          "reason": null
+        }
+      ],
+      "inventory": [
+        {
+          "token": "T",
+          "qty": "10.00000000",
+          "cost": "5.00000000"
+        }
+      ],
+      "verifier_errors": []
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-03/b NEW SPLIT with zero paid basis on both legs",
+    "observed": {
+      "events": [
+        {
+          "state": "applied",
+          "reason": null
+        }
+      ],
+      "verifier_errors": []
+    },
+    "defect_reproduced": true,
+    "note": "no collateral consumed yet split invented"
+  },
+  {
+    "case": "A14-03/c NEW SPLIT three-way fan-out, zero basis on two legs",
+    "observed": {
+      "events": [
+        {
+          "state": "applied",
+          "reason": null
+        }
+      ],
+      "verifier_errors": []
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-03/d control: unbalanced split paid basis IS quarantined",
+    "observed": {
+      "events": [
+        {
+          "state": "quarantined",
+          "reason": "split requires fully evidenced paid basis"
+        }
+      ]
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-04/a unproved 10-share -> 20-cash redemption (archived)",
+    "observed": {
+      "redeem_state": [
+        {
+          "state": "applied",
+          "reason": null
+        }
+      ],
+      "verifier": {
+        "errors": [],
+        "cash": "15",
+        "realized": "15"
+      }
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-04/b control: duplicate payout with SAME effect identity is blocked",
+    "observed": {
+      "states": [
+        {
+          "state": "applied",
+          "reason": null
+        },
+        {
+          "state": "applied",
+          "reason": null
+        }
+      ]
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-04/c NEW zero-delta REDEEM leg paying 10 cash after inventory exhausted",
+    "observed": {
+      "events": [
+        {
+          "state": "applied",
+          "reason": null
+        },
+        {
+          "state": "applied",
+          "reason": null
+        },
+        {
+          "state": "quarantined",
+          "reason": "merge/redemption requires burn/debit legs"
+        }
+      ],
+      "verifier_cash": "5",
+      "verifier_errors": []
+    },
+    "defect_reproduced": false,
+    "note": "delta==0 skips all redemption shape checks"
+  },
+  {
+    "case": "A14-04/d NEW redemption with negative cash leg",
+    "observed": {
+      "events": [
+        {
+          "state": "applied",
+          "reason": null
+        },
+        {
+          "state": "applied",
+          "reason": null
+        }
+      ],
+      "verifier_realized": "-8",
+      "errors": []
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-05/a conflicting payload with no observation (archived signature, ALL tables scanned)",
+    "observed": {
+      "event_row": {
+        "state": "conflict",
+        "reason": "identity payload conflict",
+        "canonical_payload": "{\"v\":\"original\"}"
+      },
+      "marker_found_in": {},
+      "tables_scanned": 36,
+      "conflict_rows": [
+        {
+          "id": 1,
+          "wallet": "fixture-wallet",
+          "created": 1793882909.1559196,
+          "state": "operator_review",
+          "source": "[]",
+          "paper": "[]",
+          "evidence": "{\"comparison\":[],\"recovery_requires\":\"canonical source history and separate paper review; no historical fills\",\"source_checkpoint_verified\":false}",
+          "reason": "verified identity conflict; review required"
+        }
+      ]
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-05/b NEW conflict with linked observations",
+    "observed": {
+      "marker_tables": [
+        "source_observations"
+      ],
+      "event": {
+        "state": "conflict",
+        "reason": "identity payload conflict",
+        "observation": 1
+      },
+      "links": [
+        {
+          "event": 1,
+          "observation": 1,
+          "relation": "fixture assertion"
+        }
+      ]
+    },
+    "defect_reproduced": true,
+    "note": "raw observation preserves bytes but no immutable conflict record"
+  },
+  {
+    "case": "A14-05/c NEW kind-only conflict",
+    "observed": {
+      "event": {
+        "kind": "BUY",
+        "state": "conflict",
+        "reason": "identity payload conflict"
+      },
+      "movements": []
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-08/a BLOB b\"A\" vs TEXT \"b'A'\" (archived)",
+    "observed": {
+      "blob_digest": {
+        "f": "fe21b3a17c7cc0eb8df88924e2835617fdbffa0018804876726ff74b74edecad"
+      },
+      "text_digest": {
+        "f": "fe21b3a17c7cc0eb8df88924e2835617fdbffa0018804876726ff74b74edecad"
+      },
+      "stored_type_after_text_update": [
+        "text",
+        "b'A'"
+      ]
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-08/a2 determinism control (same value twice)",
+    "observed": {
+      "d1": {
+        "f": "fe21b3a17c7cc0eb8df88924e2835617fdbffa0018804876726ff74b74edecad"
+      },
+      "d2": {
+        "f": "fe21b3a17c7cc0eb8df88924e2835617fdbffa0018804876726ff74b74edecad"
+      }
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-08/b NEW INTEGER 1 vs TEXT \"1\"",
+    "observed": {
+      "digest_a": "080a9ed428559ef602668b4c00f114f1a11c3f6b02a435f0bdc154578e4d7f22",
+      "digest_b": "43de3a417d75f4818c5a553268b80ce3a5805109a3bbc6b605e9fb0b8f50b485",
+      "typeof_a": "integer",
+      "typeof_b": "text",
+      "note": "b-stored typeof reflects deleted/reinserted last write"
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-08/b NEW INTEGER 1 vs REAL 1.0",
+    "observed": {
+      "digest_a": "080a9ed428559ef602668b4c00f114f1a11c3f6b02a435f0bdc154578e4d7f22",
+      "digest_b": "c2272c0a862f11de35da66ec8be34349001ddebae43b85ab1dafb188f8ad7b30",
+      "typeof_a": "integer",
+      "typeof_b": "real",
+      "note": "b-stored typeof reflects deleted/reinserted last write"
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-08/b NEW NULL vs empty TEXT",
+    "observed": {
+      "digest_a": "1d8fc6ceb1f94c6326d6d5483d258fcb2e179e9869325b245d105c2219bf69fd",
+      "digest_b": "055539df4a0b804c58caf46c0cd2941af10d64c1395ddd8e50b5f55d945841e6",
+      "typeof_a": "null",
+      "typeof_b": "text",
+      "note": "b-stored typeof reflects deleted/reinserted last write"
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-08/b NEW INTEGER 0 vs TEXT \"0\" vs REAL 0.0",
+    "observed": {
+      "digest_a": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+      "digest_b": "a37bbbb0764cc5bf8d8c251cb1c95e3d2e142934792916ccb362ceb5902d9f0b",
+      "typeof_a": "integer",
+      "typeof_b": "text",
+      "note": "b-stored typeof reflects deleted/reinserted last write"
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-08/c NEW TEXT with embedded NUL vs without",
+    "observed": {
+      "nul": "8fad204a6456de87190b81ac55a873debdacdc02a7109077067c680eb18abff9",
+      "plain": "f9ca6d378adafba7c7de88d13d0e9126503bb6d438f4ae7d8197edbc6e6ef300"
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-08/d NEW row order insensitive / duplicates preserved",
+    "observed": {
+      "xy": "5443726ba36060975a6de8829816117c4511a672233ba0fb73d81a4e9810e882",
+      "yx": "5443726ba36060975a6de8829816117c4511a672233ba0fb73d81a4e9810e882",
+      "xx": "4db6c4fafdb3dadf4c8a750caaf6a7ff79250a783e13c582faef7738fd832a14"
+    },
+    "defect_reproduced": false,
+    "note": "digest is order-insensitive by design (sorted)"
+  },
+  {
+    "case": "A14-08/e NEW index creation does not change digest",
+    "observed": {
+      "before": "cd65ea2c2ad99e94a85b1b6df72efef9cb2ed0ae933a60c32ce16317f7d7d6aa",
+      "after": "cd65ea2c2ad99e94a85b1b6df72efef9cb2ed0ae933a60c32ce16317f7d7d6aa"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-08/f NEW new table invisible to digest (accepts caller-supplied table list only)",
+    "observed": {
+      "digest_tables": [
+        "f"
+      ]
+    },
+    "defect_reproduced": true,
+    "note": "preservation claim depends entirely on the caller enumerating tables"
+  }
+]

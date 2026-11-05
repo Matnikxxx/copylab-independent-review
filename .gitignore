@@ -1,0 +1,3 @@
+# Review-side only: node_modules for the jsdom-based A14-09 probe.
+# Never commit vendored dependencies into an audit package.
+node_modules/

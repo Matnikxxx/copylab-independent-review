@@ -1,0 +1,267 @@
+{
+  "suite": "copylab-red-phase-acceptance",
+  "snapshot_head": "288a69f64c24438cfe69ea176e6f3d6ce7333499",
+  "total": 32,
+  "passed": 0,
+  "failed_or_error": 32,
+  "expected_against_prefix_snapshot": "failed_or_error == total",
+  "phase": "RED",
+  "cases": [
+    {
+      "finding": "A14-01",
+      "test": "closed_position_cycle_corruption_detected",
+      "severity": "MEDIUM",
+      "invariant": "A tampered closed_positions.proceeds must be detected",
+      "result": "FAIL",
+      "detail": "verifier exit=0 errors=[] (closed cycle unverified)"
+    },
+    {
+      "finding": "A14-01",
+      "test": "ledger_cost_delta_corruption_detected",
+      "severity": "MEDIUM",
+      "invariant": "A tampered ledger.cost_delta must be detected",
+      "result": "FAIL",
+      "detail": "verifier exit=0 errors=[]"
+    },
+    {
+      "finding": "A14-01",
+      "test": "ledger_fee_corruption_detected",
+      "severity": "MEDIUM",
+      "invariant": "A tampered ledger.fee must be detected against fills.fee",
+      "result": "FAIL",
+      "detail": "verifier exit=0 errors=[] (fee not reconciled)"
+    },
+    {
+      "finding": "A14-01",
+      "test": "ledger_realized_corruption_detected",
+      "severity": "HIGH",
+      "invariant": "A tampered ledger.realized must make the verifier exit non-zero",
+      "result": "FAIL",
+      "detail": "verifier exit=0 errors=[] while total_pnl=999.00000000"
+    },
+    {
+      "finding": "A14-01",
+      "test": "snapshot_equity_corruption_detected",
+      "severity": "MEDIUM",
+      "invariant": "A tampered snapshots.equity must be detected or the curve marked unverified",
+      "result": "FAIL",
+      "detail": "verifier exit=0 errors=[] (equity curve unverified)"
+    },
+    {
+      "finding": "A14-01",
+      "test": "verifier_does_not_hardcode_integrity_ok",
+      "severity": "MEDIUM",
+      "invariant": "An empty database must not be reported as 10 verified portfolios",
+      "result": "FAIL",
+      "detail": "hardcoded portfolios_checked=10 on an empty DB"
+    },
+    {
+      "finding": "A14-02",
+      "test": "dangling_event_movement_detected",
+      "severity": "HIGH",
+      "invariant": "A movement referencing a nonexistent event must be reported",
+      "result": "FAIL",
+      "detail": "errors=[] (dangling FK invisible; schema has no FK)"
+    },
+    {
+      "finding": "A14-02",
+      "test": "extra_leg_on_valid_event_detected",
+      "severity": "HIGH",
+      "invariant": "A movement whose leg is absent from its event payload must be reported",
+      "result": "FAIL",
+      "detail": "errors=[] (extra leg invisible)"
+    },
+    {
+      "finding": "A14-02",
+      "test": "orphan_effect_detected",
+      "severity": "HIGH",
+      "invariant": "A source_effects row pointing at a nonexistent event must be reported",
+      "result": "FAIL",
+      "detail": "errors=[] (orphan effect invisible)"
+    },
+    {
+      "finding": "A14-02",
+      "test": "orphan_movement_detected",
+      "severity": "HIGH",
+      "invariant": "A movement with no reachable event must be reported by row identity",
+      "result": "FAIL",
+      "detail": "errors=[] source_cash=0 (orphan invisible)"
+    },
+    {
+      "finding": "A14-03",
+      "test": "nway_split_requires_operation_spec",
+      "severity": "HIGH",
+      "invariant": "A 3-way fan-out with no condition/outcome mapping must be quarantined",
+      "result": "FAIL",
+      "detail": "unspecified 3-way split state=applied"
+    },
+    {
+      "finding": "A14-03",
+      "test": "single_sided_split_quarantined",
+      "severity": "HIGH",
+      "invariant": "A split with no complementary outcome must be quarantined, not applied",
+      "result": "FAIL",
+      "detail": "single-sided split state=applied"
+    },
+    {
+      "finding": "A14-03",
+      "test": "zero_basis_split_quarantined",
+      "severity": "HIGH",
+      "invariant": "A split consuming no paid basis must be quarantined (cannot mint inventory)",
+      "result": "FAIL",
+      "detail": "zero-basis split state=applied; 0 == 0 satisfies the paid-basis identity"
+    },
+    {
+      "finding": "A14-04",
+      "test": "negative_cash_redemption_rejected",
+      "severity": "MEDIUM",
+      "invariant": "A redemption leg paying negative cash must not be applied as a payout",
+      "result": "FAIL",
+      "detail": "negative-cash redemption state=applied"
+    },
+    {
+      "finding": "A14-04",
+      "test": "unproved_out_of_range_redemption_quarantined",
+      "severity": "HIGH",
+      "invariant": "A payout above one unit per share with no proof must be quarantined",
+      "result": "FAIL",
+      "detail": "unproved redemption state=applied"
+    },
+    {
+      "finding": "A14-05",
+      "test": "conflict_record_is_append_only",
+      "severity": "MEDIUM",
+      "invariant": "A conflict must leave an immutable record; state flip alone is insufficient",
+      "result": "FAIL",
+      "detail": "no append-only conflict evidence: the conflicting payload is absent from every non-state table (34 checked); only mutable state/review rows exist"
+    },
+    {
+      "finding": "A14-05",
+      "test": "conflicting_payload_retained",
+      "severity": "MEDIUM",
+      "invariant": "A conflicting certificate payload must be durably retrievable after the conflict",
+      "result": "FAIL",
+      "detail": "conflicting payload not retained in any of 36 tables"
+    },
+    {
+      "finding": "A14-06",
+      "test": "all_failed_attempt_bodies_retained",
+      "severity": "MEDIUM",
+      "invariant": "All three received retry bodies must be durable after total failure",
+      "result": "FAIL",
+      "detail": "durable bodies=['body-3'] (expected all 3)"
+    },
+    {
+      "finding": "A14-06",
+      "test": "attempt_without_last_raw_is_durable",
+      "severity": "MEDIUM",
+      "invariant": "An attempt log with no last_raw (pre-response failure) must still be durable",
+      "result": "FAIL",
+      "detail": "durable bodies=[]; nothing persisted at all"
+    },
+    {
+      "finding": "A14-06",
+      "test": "successful_body_survives_later_failure",
+      "severity": "MEDIUM",
+      "invariant": "A successful response received before a later failure must remain durable",
+      "result": "FAIL",
+      "detail": "durable bodies=['bad-504']; the successful body was destroyed"
+    },
+    {
+      "finding": "A14-07",
+      "test": "frontier_not_published_for_wrong_scope",
+      "severity": "MEDIUM",
+      "invariant": "A completed walk must not be published as the requested scope's frontier",
+      "result": "FAIL",
+      "detail": "frontier published for a CLOSED walk under an OPEN request: [{'wallet': 'fixture-wallet', 'endpoint': '/v2/positions', 'batch': 1, 'captured_at': 1793884422.9590044, 'coverage': 'captured pages only; late inserts and source completeness unproven'}]"
+    },
+    {
+      "finding": "A14-07",
+      "test": "scope_substitution_rejected",
+      "severity": "MEDIUM",
+      "invariant": "A pending CLOSED walk must not be sent as the caller's OPEN request",
+      "result": "FAIL",
+      "detail": "OPEN request was sent as status=CLOSED"
+    },
+    {
+      "finding": "A14-08",
+      "test": "digest_distinguishes_blob_from_its_repr_text",
+      "severity": "LOW",
+      "invariant": "A BLOB and the TEXT of its own Python repr must not collide through default=str",
+      "result": "FAIL",
+      "detail": "collision: blob and text share digest fe21b3a17c7cc0eb (default=str renders bytes as the text b\"...\" )"
+    },
+    {
+      "finding": "A14-08",
+      "test": "digest_distinguishes_blob_from_text",
+      "severity": "LOW",
+      "invariant": "BLOB b\"A\" and TEXT \"b'A'\" must produce different digests (default=str collision)",
+      "result": "FAIL",
+      "detail": "collision: blob and text(text) share digest fe21b3a17c7cc0eb"
+    },
+    {
+      "finding": "A14-09",
+      "test": "stale_health_not_green",
+      "severity": "MEDIUM",
+      "invariant": "A ts=0 ok=1 health row must not render as Healthy",
+      "result": "FAIL",
+      "detail": "stale ts=0 row rendered as 'Healthy'"
+    },
+    {
+      "finding": "A14-10",
+      "test": "backup_requires_ownership",
+      "severity": "LOW",
+      "invariant": "A backup must not proceed while another process holds writer ownership",
+      "result": "FAIL",
+      "detail": "backup succeeded while another owner held the worker lock"
+    },
+    {
+      "finding": "A14-10",
+      "test": "lock_identity_is_canonical",
+      "severity": "MEDIUM",
+      "invariant": "A DB reached via symlink must use the same worker lock as the real path",
+      "result": "FAIL",
+      "detail": "symlinked path acquired a SECOND exclusive lock: two owners possible"
+    },
+    {
+      "finding": "A14-10",
+      "test": "store_requires_ownership_before_write",
+      "severity": "MEDIUM",
+      "invariant": "While another owner holds the worker lock, a second Store must refuse or be read-only",
+      "result": "FAIL",
+      "detail": "a second Store() became a WRITER while the owner held the worker lock; Store() itself is not ownership-aware, so safety depends on every caller remembering to flock"
+    },
+    {
+      "finding": "F-02",
+      "test": "verifier_binds_database_identity",
+      "severity": "MEDIUM",
+      "invariant": "The verifier report must identify the database it verified (hash)",
+      "result": "FAIL",
+      "detail": "verifier report does not bind the verified database bytes (no sha256 44e9b382070d...); findings cannot be attributed to a snapshot"
+    },
+    {
+      "finding": "F-03",
+      "test": "signing_scan_fails_closed",
+      "severity": "MEDIUM",
+      "invariant": "If the signing-code scan finds no source files it must error, not silently pass",
+      "result": "FAIL",
+      "detail": "exit=0 errors=[] - scan silently empty when cwd has no lab/"
+    },
+    {
+      "finding": "F-04",
+      "test": "hold_history_is_append_only",
+      "severity": "MEDIUM",
+      "invariant": "Two successive holds must leave both reasons retrievable",
+      "result": "FAIL",
+      "detail": "hold history overwritten: final visible reasons={'gap B'}"
+    },
+    {
+      "finding": "F-05",
+      "test": "hold_release_is_attributable",
+      "severity": "MEDIUM",
+      "invariant": "There must be a release path that records who released and on what evidence",
+      "result": "FAIL",
+      "detail": "no hold-release mechanism or release record exists in code or schema"
+    }
+  ]
+}

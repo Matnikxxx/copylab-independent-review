@@ -1,0 +1,221 @@
+[
+  {
+    "case": "A14-06/a all three attempts fail (archived signature)",
+    "observed": {
+      "raised": "all synthetic attempts failed",
+      "durable_raw": [
+        "body-3"
+      ],
+      "dispositions": [
+        "failed response/capture; retained for recovery"
+      ],
+      "batch_status": {
+        "status": "incomplete",
+        "error": "all synthetic attempts failed"
+      }
+    },
+    "defect_reproduced": true,
+    "note": "2 of 3 received bodies lost"
+  },
+  {
+    "case": "A14-06/b control: page-level retry outside get() leaves ONLY the failed page body",
+    "observed": {
+      "durable": [
+        {
+          "raw": "first-503",
+          "disposition": "failed response/capture; retained for recovery"
+        }
+      ]
+    },
+    "defect_reproduced": false,
+    "note": "collect() does not retry; PublicClient.get() is the retry owner, so a recovered attempt is invisible here"
+  },
+  {
+    "case": "A14-06/c NEW timeout after a successful attempt: durable evidence",
+    "observed": {
+      "durable": [
+        {
+          "raw": "body-2",
+          "disposition": "failed response/capture; retained for recovery"
+        }
+      ],
+      "batch": {
+        "status": "incomplete",
+        "error": "subprocess timeout"
+      }
+    },
+    "defect_reproduced": true,
+    "note": "successful body-1 lost entirely"
+  },
+  {
+    "case": "A14-06/d NEW attempt_log only, last_raw never set",
+    "observed": {
+      "durable_count": 0,
+      "batch": {
+        "status": "incomplete",
+        "error": "network down"
+      },
+      "gaps": 1
+    },
+    "defect_reproduced": true,
+    "note": "received attempt body not durable at all"
+  },
+  {
+    "case": "A14-06/e control: successful path DOES keep retried bodies",
+    "observed": {
+      "durable": [
+        {
+          "raw": "r1",
+          "disposition": "retry HTTP 503: e1"
+        },
+        {
+          "raw": "final",
+          "disposition": "captured"
+        }
+      ]
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-07/a CLOSED batch resumed as OPEN request (archived signature)",
+    "observed": {
+      "requested": "OPEN",
+      "actually_sent": [
+        {
+          "limit": 500,
+          "status": "CLOSED",
+          "user": "fixture-wallet",
+          "cursor": "cur-1"
+        }
+      ],
+      "returned_batch": {
+        "id": 1,
+        "wallet": "fixture-wallet",
+        "endpoint": "/v2/positions",
+        "params": "{\"limit\":500,\"status\":\"CLOSED\",\"user\":\"fixture-wallet\"}",
+        "started": 1793882943.4529755,
+        "finished": 1793882943.4565785,
+        "status": "complete",
+        "next_cursor": null,
+        "page_number": 2,
+        "error": null,
+        "coverage": "unproven"
+      },
+      "batch_count": 1
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-07/b NEW different time window silently replaced by pending one",
+    "observed": {
+      "requested_start_end": [
+        5000,
+        9000
+      ],
+      "actually_sent": {
+        "end": 2000,
+        "start": 1000,
+        "user": "fixture-wallet",
+        "cursor": "cur-1"
+      }
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-07/c NEW capture_frontiers after scope substitution",
+    "observed": {
+      "frontiers": [
+        {
+          "wallet": "fixture-wallet",
+          "endpoint": "/v2/positions",
+          "batch": 1,
+          "captured_at": 1793882943.4968364,
+          "coverage": "captured pages only; late inserts and source completeness unproven"
+        }
+      ],
+      "batches": [
+        {
+          "id": 1,
+          "params": "{\"status\":\"CLOSED\",\"user\":\"fixture-wallet\"}",
+          "status": "complete"
+        }
+      ],
+      "state": [
+        {
+          "wallet": "fixture-wallet",
+          "state": "quarantined",
+          "last_complete_batch": 1
+        }
+      ]
+    },
+    "defect_reproduced": true,
+    "note": "a CLOSED walk completed under an OPEN request is published as the OPEN frontier"
+  },
+  {
+    "case": "A14-10/a Store() creates and initializes a database before any worker flock is taken",
+    "observed": {
+      "db_existed_before": false,
+      "db_exists_after_store": true,
+      "sidecar_files": [
+        "a1410.sqlite"
+      ],
+      "main_py_order": "App(db,config) -> Store(...) at main.py:40; flock acquired afterwards at main.py:44-47"
+    },
+    "defect_reproduced": true,
+    "note": "static ordering confirmed; no application started"
+  },
+  {
+    "case": "A14-10/b App.__init__ constructs Store (schema+PRAGMA+settings write) with no flock held",
+    "observed": {
+      "db_created": true,
+      "migrations": [
+        {
+          "version": 1,
+          "applied": 1793882943.557676
+        },
+        {
+          "version": 2,
+          "applied": 1793882943.558135
+        },
+        {
+          "version": 3,
+          "applied": 1793882943.5596032
+        }
+      ],
+      "settings": [
+        {
+          "key": "config"
+        }
+      ],
+      "synthetic": false,
+      "journal_mode": {
+        "journal_mode": "wal"
+      }
+    },
+    "defect_reproduced": true,
+    "note": "App construction only; no run(), no server, no collector cycle"
+  },
+  {
+    "case": "A14-10/c NEW lock ignored by Store(): a second process-level writer opens the same DB while flock is held",
+    "observed": {
+      "lock_held_by_owner": true,
+      "second_store_opened": true,
+      "db_mtime_changed_on_second_open": false,
+      "note": "Store() never consults the worker lock; only main()/configure.py/upgrade_existing do"
+    },
+    "defect_reproduced": true,
+    "note": "contention safety depends entirely on every entry point remembering to flock"
+  },
+  {
+    "case": "A14-10/d NEW Store.backup() needs no worker ownership",
+    "observed": {
+      "backup_created": true,
+      "main_py_order": "main(): App(...) then if args.backup: app.s.backup(...); return  -> returns BEFORE flock at main.py:43-47"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  }
+]

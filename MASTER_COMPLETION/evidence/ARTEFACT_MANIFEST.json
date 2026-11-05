@@ -1,0 +1,79 @@
+{
+  "artefacts": [
+    {
+      "path": "MCD-01.md",
+      "bytes": 34231,
+      "sha256": "1943c3cefcbdfe1d208b84012e637ac524a813e74c51e13f7a0e9698cdfba1bf"
+    },
+    {
+      "path": "evidence/probes/a1409.js",
+      "bytes": 2016,
+      "sha256": "d5533c7f8c6d8fddf794d514086146f2e3a1ea9f88390664d3fd01f31dfa04bc"
+    },
+    {
+      "path": "evidence/probes/p1_a1401_a1402.py",
+      "bytes": 10592,
+      "sha256": "c9eab2f047c8cb7c477fef4454d729a055d49b49ed1e445d19f5eab659ac5dd9"
+    },
+    {
+      "path": "evidence/probes/p2_a1403_a1408.py",
+      "bytes": 12732,
+      "sha256": "0501eaef1a62e23059fd8b0a8bfa8b7a74fc91c0d1b288ff459004fffc050fe3"
+    },
+    {
+      "path": "evidence/probes/p3_a1406_a1407_a1410.py",
+      "bytes": 11794,
+      "sha256": "20d9a0c1478a024da513cee1bab3c2d9925714276a1ed1b35574caa0d519aea8"
+    },
+    {
+      "path": "evidence/probes/state.json.py",
+      "bytes": 884,
+      "sha256": "d72f091f26b4b5cce6f36661e7359595f472d9b06aeecfa4c4afe88d9b3c33a8"
+    },
+    {
+      "path": "evidence/red-phase-results.json",
+      "bytes": 10391,
+      "sha256": "91a26c7f9252ec62e73ec2a677e79e0e71f689d4d7263b4dc97650439e812032"
+    },
+    {
+      "path": "evidence/results/a1409-results.json",
+      "bytes": 1332,
+      "sha256": "a39b02e2352623b0535ee7087eb247e010434bb3c4beea92efc9da5fb260e967"
+    },
+    {
+      "path": "evidence/results/p1-results.json",
+      "bytes": 5454,
+      "sha256": "e6b565b7142cfd78766e0ed2818193cf59a915ec3186ec32301a5eb1ce4084bf"
+    },
+    {
+      "path": "evidence/results/p2-results.json",
+      "bytes": 8526,
+      "sha256": "a4940fc0091b9f58acb42503c4aeeced8f69b5a5cf6235b751a843f110e220b8"
+    },
+    {
+      "path": "evidence/results/p3-results.json",
+      "bytes": 6033,
+      "sha256": "cfe7910abb22d7a1c727354d89d520d1cc27b89e33998c46fb4c046c27c9c0bf"
+    },
+    {
+      "path": "tools/REPRODUCE.md",
+      "bytes": 6741,
+      "sha256": "6cdd740cabc9103fac5f2741e7749a511a3e1d9c2853169034bcb62f2416c056"
+    },
+    {
+      "path": "tools/acceptance_suite.py",
+      "bytes": 31795,
+      "sha256": "10d5bff6e2faf5db09aa45eba60e4633267d3bd842c736cf0d0cd19ce0af092b"
+    },
+    {
+      "path": "tools/package.json",
+      "bytes": 51,
+      "sha256": "0a0f22138931e45dfa0d262cff6538ba19843944472d030f7815ec508bfe65da"
+    }
+  ],
+  "count": 14,
+  "snapshot_head": "288a69f64c24438cfe69ea176e6f3d6ce7333499",
+  "archive_sha256": "f19437429a3dc239813840628920496123bf5fc2be3f0bf6c3af3fd2f9b11c23",
+  "red_phase": "32/32 FAIL",
+  "generated": "2026-11-05"
+}

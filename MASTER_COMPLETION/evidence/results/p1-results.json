@@ -1,0 +1,201 @@
+[
+  {
+    "case": "A14-01/a clean ledger passes (control)",
+    "observed": {
+      "exit": 0,
+      "errors": [],
+      "fills_replayed": 2,
+      "portfolios_checked": 10
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-01/b ledger.realized tampered (archived case)",
+    "observed": {
+      "verifier_exit": 0,
+      "verifier_errors": [],
+      "equity": "1003.00000000",
+      "total_pnl": "1998.00000000",
+      "equity_minus_starting": "3"
+    },
+    "defect_reproduced": true,
+    "note": "equity identity broken while verifier exits 0"
+  },
+  {
+    "case": "A14-01/c NEW ledger.fee tampered (cash/realized untouched)",
+    "observed": {
+      "verifier_exit": 0,
+      "verifier_errors": [],
+      "reported_fees": "55.00000000"
+    },
+    "defect_reproduced": true,
+    "note": "audit.py never reconciles ledger.fee against fills.fee"
+  },
+  {
+    "case": "A14-01/d NEW ledger.cost_delta tampered",
+    "observed": {
+      "verifier_exit": 0,
+      "verifier_errors": []
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-01/e NEW snapshots.equity tampered",
+    "observed": {
+      "verifier_exit": 0,
+      "verifier_errors": []
+    },
+    "defect_reproduced": true,
+    "note": "snapshot equity series is not verified"
+  },
+  {
+    "case": "A14-01/f NEW closed_positions.proceeds tampered",
+    "observed": {
+      "verifier_exit": 0,
+      "verifier_errors": [],
+      "closed_pnl_not_used_in_metrics_total": true
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-01/g control: deleted ledger row IS caught",
+    "observed": {
+      "verifier_exit": 1,
+      "verifier_errors": [
+        "cash mismatch A/ideal",
+        "1 fills missing ledger entries"
+      ]
+    },
+    "defect_reproduced": false,
+    "note": "control - must be caught"
+  },
+  {
+    "case": "A14-01/h NEW positions.qty negative (stored) tamper",
+    "observed": {
+      "verifier_exit": 1,
+      "verifier_errors": [
+        "position mismatch A/ideal/T"
+      ]
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-01/i NEW ledger.cash_delta tampered",
+    "observed": {
+      "verifier_exit": 1,
+      "verifier_errors": [
+        "cash mismatch A/ideal"
+      ]
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-01/j control: fills.qty tampered IS caught",
+    "observed": {
+      "verifier_exit": 1,
+      "verifier_errors": [
+        "cash mismatch A/ideal",
+        "position mismatch A/ideal/T"
+      ]
+    },
+    "defect_reproduced": false,
+    "note": ""
+  },
+  {
+    "case": "A14-02/a orphan movement (event=NULL)",
+    "observed": {
+      "classification": "synthetic",
+      "third_party_audit": false,
+      "applied_source_events": 0,
+      "source_cash": "0",
+      "source_realized": "0",
+      "raw_observations": 0,
+      "errors": [],
+      "scope": "independent arithmetic and durable-capture invariants; not chain completeness or market performance"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-02/b dangling event id movement",
+    "observed": {
+      "classification": "synthetic",
+      "third_party_audit": false,
+      "applied_source_events": 1,
+      "source_cash": "-5",
+      "source_realized": "0",
+      "raw_observations": 0,
+      "errors": [],
+      "scope": "independent arithmetic and durable-capture invariants; not chain completeness or market performance"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-02/c extra movement on a valid event (leg not in payload)",
+    "observed": {
+      "classification": "synthetic",
+      "third_party_audit": false,
+      "applied_source_events": 1,
+      "source_cash": "-5",
+      "source_realized": "0",
+      "raw_observations": 0,
+      "errors": [],
+      "scope": "independent arithmetic and durable-capture invariants; not chain completeness or market performance"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-02/d cloned movement rows with event=NULL",
+    "observed": {
+      "classification": "synthetic",
+      "third_party_audit": false,
+      "applied_source_events": 1,
+      "source_cash": "-5",
+      "source_realized": "0",
+      "raw_observations": 0,
+      "errors": [],
+      "scope": "independent arithmetic and durable-capture invariants; not chain completeness or market performance"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-02/e orphan source_effects row",
+    "observed": {
+      "classification": "synthetic",
+      "third_party_audit": false,
+      "applied_source_events": 1,
+      "source_cash": "-5",
+      "source_realized": "0",
+      "raw_observations": 0,
+      "errors": [],
+      "scope": "independent arithmetic and durable-capture invariants; not chain completeness or market performance"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  },
+  {
+    "case": "A14-02/f control: applied movement cash tamper IS caught",
+    "observed": {
+      "classification": "synthetic",
+      "third_party_audit": false,
+      "applied_source_events": 1,
+      "source_cash": "-5",
+      "source_realized": "0",
+      "raw_observations": 0,
+      "errors": [
+        "source journal cash mismatch"
+      ],
+      "scope": "independent arithmetic and durable-capture invariants; not chain completeness or market performance"
+    },
+    "defect_reproduced": true,
+    "note": ""
+  }
+]
