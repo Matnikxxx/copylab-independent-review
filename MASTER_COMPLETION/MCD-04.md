@@ -17,6 +17,9 @@ decision #1, and the standing authorisation state. Everything here is citable by
 | Red-phase suite — acceptance baseline | **ADOPTED, PROVISIONAL** (now 35 criteria) | owner, D-4 + D-9 |
 | External review — mandatory | **YES, MANDATORY, OUTSTANDING** | owner, D-3 |
 | R1–R10 plan revisions | **DISPOSITIONED** (8 ACCEPT, 2 AMEND) | owner, D-9 |
+| GOV-01 safety requirement set | **CLOSED** → `MCD-08.md` (authoritative) | owner, D-12 |
+| GOV-09 G2 schema design | **CLOSED** (design only) → `MCD-09.md` | owner, D-12 |
+| Version pinning documentation | **CLOSED** → `MCD-10.md` | owner, D-12 |
 | 1A–1H ↔ G1–G6 numbering | **RESOLVED** (`MCD-07.md`) | owner, D-11 |
 | A14-08 numeric-collision claim | **WITHDRAWN**, corrected finding accepted | owner, D-2 |
 | Paper-only restriction | **IN FORCE, unchanged** | standing |
@@ -161,6 +164,25 @@ GRANTED**.
 renumbering the project's own plan would rewrite an artefact under review (`INV-09`/`INV-11`). Every artefact
 now cites a group as `GX (plan 1Y)`, and `MCD-02`'s Group column carries both. GOV-12 **CLOSED**.
 
+### D-12 · Consolidated external-review preparation stage
+
+> *Owner:* "Please proceed with one consolidated external-review preparation stage" — GOV-09 schema design,
+> complete handover, GOV-01 closure, version pinning, consistency check, reviewer checklist.
+
+**Implemented in one run, with no routine approvals requested:**
+- **GOV-01 → CLOSED** by new **`MCD-08.md`** (authoritative consolidated safety requirements, SR-01…SR-28,
+  provenance-tagged). TD-01 preserved unmodified; `MCD-08` is supplemental, not corrective.
+- **GOV-09 design portion → CLOSED** by new **`MCD-09.md`** (additive schema for attempt identity + scope
+  identity, with migration safety, compatibility, integrity constraints, acceptance tests). **No migration
+  written or run.**
+- **Blocker 10 documentation → CLOSED** by new **`MCD-10.md`** (exact versions, divergence, impact analysis,
+  reproduction requirements). Actual parity evidence remains **GOV-15**.
+- **Handover package** completed in `MCD-05.md`; **reviewer checklist** in new **`MCD-11.md`**.
+- **Consistency/integrity check** completed → `CONSISTENCY_CHECK.md`.
+- **Obligations created:** GOV-13 (owner to confirm SR-set exhaustiveness, non-blocking), GOV-14
+  (`capture_frontiers` cannot be fixed additively — decision needed at G2), GOV-15 (cross-version parity
+  unverified).
+
 ---
 
 ## 3. TD-01 · Transmission discrepancy record
@@ -299,7 +321,7 @@ entry conditions unmet.
 
 | ID | Item | Severity | Status | Owner |
 |---|---|---|---|---|
-| GOV-01 | Full directive §2 not received (TD-01) | HIGH | **BLOCKED on owner** | owner |
+| GOV-01 | Full directive §2 not received (TD-01) | HIGH | **CLOSED** by D-12 → `MCD-08.md`; residual = GOV-13 | resolved |
 | GOV-02 | No genuinely external reviewer engaged | HIGH | **BLOCKED** | owner |
 | GOV-03 | Red suite adopted provisionally; needs independent validation | HIGH | OPEN (provisional per D-4) | external reviewer |
 | GOV-04 | F-01…F-09 not yet in `MASTER_DEFECT_REGISTER.md` | MEDIUM | OPEN | implementer, post-approval |
@@ -307,7 +329,7 @@ entry conditions unmet.
 | GOV-06 | Evidence provenance binding (R9/F-02) unimplemented | MEDIUM | OPEN | implementer, in G1/G3 |
 | GOV-07 | Reviewer to re-derive A14-08 corrected scope | MEDIUM | OPEN | external reviewer |
 | GOV-08 | R1–R10 disposition | HIGH | **CLOSED** by D-9 → `MCD-06.md` | resolved |
-| GOV-09 | G2 design doc must specify attempt-identity + scope-identity schema before code | MEDIUM | OPEN | implementer, post-approval |
+| GOV-09 | G2 design doc: attempt + scope identity schema | MEDIUM | **design CLOSED** (`MCD-09`); implementation gated by G2 | resolved (design) |
 | GOV-10 | Reviewer to confirm R4/R5 restatements correctly encoded (#18–#25) | MEDIUM | OPEN | external reviewer |
 | GOV-11 | Criteria re-based 32 → 35 across all artefacts | — | **CLOSED** this run | resolved |
 | GOV-12 | 1A–1H ↔ G1–G6 numbering ambiguity | MEDIUM | **CLOSED** → `MCD-07.md` | resolved |

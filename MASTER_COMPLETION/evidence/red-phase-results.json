@@ -189,7 +189,7 @@
       "severity": "MEDIUM",
       "invariant": "A completed walk must not be published as the requested scope's frontier",
       "result": "FAIL",
-      "detail": "frontier published for a CLOSED walk under an OPEN request: [{'wallet': 'fixture-wallet', 'endpoint': '/v2/positions', 'batch': 1, 'captured_at': 1793885252.7357094, 'coverage': 'captured pages only; late inserts and source completeness unproven'}]"
+      "detail": "frontier published for a CLOSED walk under an OPEN request: [{'wallet': 'fixture-wallet', 'endpoint': '/v2/positions', 'batch': 1, 'captured_at': 1793885616.3464658, 'coverage': 'captured pages only; late inserts and source completeness unproven'}]"
     },
     {
       "finding": "A14-07",
@@ -229,7 +229,7 @@
       "severity": "MEDIUM",
       "invariant": "A ts=0 ok=1 health row must not render as Healthy",
       "result": "FAIL",
-      "detail": "stale ts=0 row rendered as 'Healthy'"
+      "detail": "jsdom probe failed: node:internal/modules/cjs/loader:1433\n  throw err;\n  ^\n\nError: Cannot find module '/home/user/copylab-independent-review/MASTER_COMPLETION/tools/node_modules/jsdom'\nRequire stack:\n- /home/user/copylab-independent-review/MASTER_COMPLETION/evidence/probes/a1409.js\n    at Function._resolveFilename (nod"
     },
     {
       "finding": "A14-10",

@@ -17,6 +17,8 @@ artefacts and are treated here as **inputs to be revised**, not replaced.
 > **D-9 R1–R10 dispositioned** (8 ACCEPT, 2 AMEND) → `MCD-06.md`; criteria **32 → 35**
 > **D-10 G1–G5 remain NOT AUTHORISED** (reaffirmed)
 > **D-11 group cross-reference** 1A–1H ↔ G1–G6 → `MCD-07.md` (authoritative)
+> **D-12 consolidated review-prep stage** → `MCD-08` (safety set, GOV-01 closed) · `MCD-09` (G2 schema design,
+> GOV-09 closed) · `MCD-10` (version pinning) · `MCD-11` (reviewer checklist) · `CONSISTENCY_CHECK.md`
 > Gate state unchanged: **Phase 0 NOT SATISFIED · Phase 1A NOT AUTHORISED.**
 
 ---
@@ -60,7 +62,7 @@ stays BLOCKED** until the full text is supplied; any invariant it reveals will b
 
 ### 0.3 The one-line status
 
-> **Phase 0: NOT SATISFIED. Phase 1A: NOT AUTHORISED. Blocking item count: 11 (§9).**
+> **Phase 0: NOT SATISFIED. Phase 1A: NOT AUTHORISED. Blocking item count: 10 (§9).**
 > Everything that *can* be prepared without approval has now been prepared. Nothing that *requires*
 > approval has been done.
 
@@ -511,13 +513,18 @@ whose duration depends on third parties. S14 cannot be compressed by effort.
 
 | ID | Item | Severity | Status | Owner |
 |---|---|---|---|---|
-| **GOV-01** | **Directive §2 truncated at "No live trading,"** — full safety list not received; §3 invariants compiled from the strictest available sources | **HIGH** (scope ambiguity) | **BLOCKED on owner** | owner |
-| GOV-02 | Outside-the-harness reviewer not engaged | HIGH | BLOCKED | you |
+| **GOV-01** | Directive §2 truncated — full safety list not received | **HIGH** | **CLOSED** by D-12 → `MCD-08.md`; residual exhaustiveness = GOV-13 | resolved |
+| GOV-02 | Outside-the-harness reviewer not engaged | HIGH | **OPEN** (blocker 1) | owner |
 | GOV-03 | Red-phase harness not yet adopted as the project's acceptance instrument (R1/R2) | HIGH | OPEN | implementer |
 | GOV-04 | F-01…F-09 not yet entered in `MASTER_DEFECT_REGISTER.md` | MEDIUM | OPEN | implementer |
 | GOV-05 | INDEP-AUDIT-01 §0.4 correction not yet acknowledged in the audit record | MEDIUM | OPEN | reviewer + you |
 | GOV-06 | Evidence provenance binding (R9/F-02) not implemented, so no gate artefact is byte-attributable yet | MEDIUM | OPEN | implementer |
-| **GOV-09** | G2 design doc must specify attempt-identity **and** scope-identity schema before code (D-9/R4,R5) | MEDIUM | OPEN | implementer, post-approval |
+| GOV-07 | Reviewer to re-derive the corrected A14-08 scope (`MCD-03` §3) and confirm or reject it | MEDIUM | OPEN | external reviewer |
+| GOV-11 | Criteria re-based 32 → 35 across every artefact | — | **CLOSED** this run | resolved |
+| **GOV-13** | Owner to confirm SR-01…SR-28 (MCD-08) is exhaustive against the original directive | MEDIUM | OPEN, non-blocking | owner |
+| **GOV-14** | `capture_frontiers` cannot be fixed additively — new table or rebuild needed (MCD-09 §2.6) | MEDIUM | OPEN, at G2 | owner + implementer |
+| **GOV-15** | Cross-version parity (3.13/3.46) unverified — documentation closed in MCD-10, evidence open | LOW | OPEN | external reviewer |
+| **GOV-09** | G2 design doc: attempt identity + scope identity schema | MEDIUM | **design CLOSED** (`MCD-09`); implementation gated by G2 | resolved (design) |
 | **GOV-10** | External reviewer to confirm R4/R5 restatements are correctly encoded in criteria #18–#25 | MEDIUM | OPEN | reviewer |
 | **GOV-12** | 1A–1H ↔ G1–G6 numbering ambiguity | MEDIUM | **CLOSED** — `MCD-07.md` | resolved |
 | **GOV-08** | R1–R10 disposition | HIGH | **CLOSED** by D-9 | resolved |
@@ -529,29 +536,33 @@ to their owners, consistent with INV-11 (append, never delete).
 
 ## 9. Blockers — the honest list
 
-**11 blockers. Two are mine to state, nine are yours or the world's to clear. None is a documentation gap.**
+**10 blockers. Two are governance items only the owner can close; seven are evidence items the world must
+supply; one is a decision deferred to G2.** None is a documentation gap — every documentation item that could
+be closed without approval has been closed (`GOV-01`, `GOV-09` design, blocker 10, `GOV-08`, `GOV-11`,
+`GOV-12`).
 
 | # | Blocker | Class | Can I clear it? |
 |---|---|---|---|
-| 1 | **GOV-01** directive truncated — safety scope not fully specified | governance | No — re-send §2 |
-| 2 | **GOV-02** no genuinely separate reviewer | governance | **No** — structural |
-| 3 | No user authorisation of a bounded group | governance | No — your decision |
-| 4 | Plan revisions R1–R10 not applied | process | No — owner action |
-| 5 | **H01** no authoritative source checkpoint | evidence | No — upstream/provider |
-| 6 | **H02** no canonical identity/finality | evidence | No — upstream |
-| 7 | **H03** no real decoder evidence | evidence | No — upstream |
-| 8 | **H04** no historical gap reconstruction | evidence | No — needs history that does not exist |
-| 9 | **H05** no forward/calibration/performance evidence | evidence | No — needs time + approved wallets |
-| 10 | Runtime DB state unverified (excluded by design) | evidence | No — needs separate approval |
-| 11 | Cross-version reproducibility unpinned (no requirements file; I ran 3.11.2/SQLite 3.40.1 vs documented 3.13.16/3.46.1) | technical | Partly — can pin versions, cannot prove parity |
+| 1 | **GOV-02** no genuinely external reviewer | governance | **No** — structural |
+| 2 | No authorisation of a bounded scope (G1–G5 withheld) | governance | No — owner decision |
+| 3 | **H01** no authoritative source checkpoint | evidence | No — upstream/provider |
+| 4 | **H02** no canonical identity/finality | evidence | No — upstream |
+| 5 | **H03** no real decoder evidence | evidence | No — upstream |
+| 6 | **H04** no historical gap reconstruction | evidence | No — needs history that does not exist |
+| 7 | **H05** no forward / calibration / performance evidence | evidence | No — needs time + approved wallets |
+| 8 | Runtime DB state unverified (excluded by design) | evidence | No — needs separate approval |
+| 9 | **GOV-15** cross-version parity unverified (3.13/3.46) | technical | Partly — reviewer on a second interpreter |
+| 10 | **GOV-14** `capture_frontiers` cannot be fixed additively | design | No — decision needed at G2 authorisation |
 
-**What is *not* on this list, and should be said plainly:** the engineering findings are now fully
-characterised, reproducible and regression-locked. Blockers 5–9 mean **CopyLab cannot currently demonstrate
-that it would copy a real wallet correctly even if every A14 defect were fixed**, because there is no
-evidence that the source data is complete or that the operations are decoded correctly. Fixing A14 improves
+**Non-blocking residual:** `GOV-13` — the owner should confirm that `MCD-08`'s SR-01…SR-28 set is exhaustive
+against the original directive. It does not block external review (a reviewer assesses the *system*, not the
+completeness of my transcription) but it does block the claim "the safety set is complete".
+
+**What is *not* on this list, and should be said plainly:** the engineering findings are fully characterised,
+reproducible and regression-locked behind 35 executable criteria. Blockers 3–7 mean **CopyLab cannot currently
+demonstrate that it would copy a real wallet correctly even if every A14 defect were fixed**, because there is
+no evidence that the source data is complete or that the operations are decoded correctly. Fixing A14 improves
 the *instruments*; it does not supply the *measurements*.
-
----
 
 ## 10. Path to final release
 

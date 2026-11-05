@@ -162,7 +162,7 @@ to the resume lookup inside `collect()`. Recorded for G2's design doc. Neither i
 | ID | Item | State |
 |---|---|---|
 | GOV-08 | R1–R10 dispositioned | **CLOSED** by D-9 |
-| GOV-09 | G2 design doc must cover attempt identity + scope identity before code | OPEN (implementer, post-approval) |
+| GOV-09 | G2 design doc: attempt identity + scope identity | **design CLOSED** (`MCD-09`, D-12); implementation OPEN, gated by G2 |
 | GOV-10 | External reviewer to confirm the R4/R5 restatements are correctly encoded in criteria | OPEN (reviewer) |
 | GOV-11 | Criteria count 32 → 35; all package artefacts re-based on 35 | **CLOSED** this run |
 

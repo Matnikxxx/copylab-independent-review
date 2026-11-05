@@ -36,6 +36,11 @@ Everything is in this repository. **Nothing needs to be assembled.**
 | 5 | **35 acceptance criteria** | `MASTER_COMPLETION/MCD-02.md` | per-test root cause, pre-fix result, post-fix condition |
 | 5b | **R1–R10 disposition register** | `MASTER_COMPLETION/MCD-06.md` | what was accepted/amended, incl. R4/R5 restatements |
 | 5c | **Group cross-reference** | `MASTER_COMPLETION/MCD-07.md` | resolves 1A–1H ↔ G1–G6 (read this before assessing ordering) |
+| 5d | **Authoritative safety requirements** | `MASTER_COMPLETION/MCD-08.md` | owner-approved SR-01…SR-28; closes GOV-01 |
+| 5e | **G2 additive schema design** | `MASTER_COMPLETION/MCD-09.md` | attempt identity + scope identity; migration safety; GOV-14 |
+| 5f | **Environment & version pinning** | `MASTER_COMPLETION/MCD-10.md` | exact versions, divergence, impact analysis, GOV-15 |
+| 5g | **Reviewer checklist** | `MASTER_COMPLETION/MCD-11.md` | the tick-list to work through, incl. signature block |
+| 5h | **Consistency check** | `MASTER_COMPLETION/CONSISTENCY_CHECK.md` | evidence that the package agrees with itself |
 | 6 | **A14-08 correction record** | `MASTER_COMPLETION/MCD-03.md` | the claim I withdrew, and why |
 | 7 | Decisions ledger | `MASTER_COMPLETION/MCD-04.md` | gate state, TD-01, what counts as Phase 0 satisfied |
 | 8 | **Executable red suite** | `MASTER_COMPLETION/tools/acceptance_suite.py` | 32 tests, each asserting a safe invariant |
@@ -44,6 +49,11 @@ Everything is in this repository. **Nothing needs to be assembled.**
 | 11 | Probe outputs | `MASTER_COMPLETION/evidence/results/` | hashed, as run |
 | 12 | **Reproduction guide** | `MASTER_COMPLETION/tools/REPRODUCE.md` | exact commands, isolation, expected output |
 | 13 | Artefact hashes | `MASTER_COMPLETION/evidence/ARTEFACT_MANIFEST.json` | integrity of the package itself |
+
+**Note on document count:** the package was described as "seven documents" at v2. It is now **11 MCD documents
+plus a README and a consistency-check record** — MCD-08…MCD-11 were added by the owner's review-preparation
+directive (D-12). All are listed above; none is optional except 5d/5e/5f which a reviewer may skim if time is
+short, provided they record that they did so.
 
 **Deliberately absent** (do not ask the reviewer to work around this): runtime databases, `.git`, wallet
 addresses, chain identifiers, real market data, Playwright binaries. Runtime DB export requires **separate

@@ -17,6 +17,8 @@ Each criterion states five things and is falsifiable without reference to my opi
 | **Intended failure reason** | the *mechanism* in the current code that makes the invariant fail — the thing remediation must change |
 | **Pre-fix result** | what the suite actually observed on the frozen snapshot (reproducible per `tools/REPRODUCE.md`) |
 | **Post-fix acceptance condition** | what "green" must mean, stated so it cannot be satisfied by weakening the test |
+
+*(Count note: this table's legend row is the only occurrence of that phrase outside the 35 criteria; every criterion has exactly one.)*
 | **Regression guard** | what must *stay* true, so a fix cannot trade one defect for another |
 | **Group** | owning group, with the project plan group in parentheses (see `MCD-07`) |
 

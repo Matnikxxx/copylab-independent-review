@@ -2,21 +2,28 @@
 
 **Phase 0: NOT SATISFIED · Phase 1A: NOT AUTHORISED · G1–G5: NOT AUTHORISED · no fix performed.**
 
-Owner decisions D-1…D-11 are recorded in **`MCD-04.md`**. Latest: **D-9** dispositioned R1–R10 (8 ACCEPT,
-2 AMEND) and **D-11** resolved the 1A–1H ↔ G1–G6 numbering via **`MCD-07.md`**. No gate advanced.
+Owner decisions **D-1…D-12** are recorded in **`MCD-04.md`**. Latest: **D-12** — the owner accepted R1–R10 and the
+35-case suite and ordered one consolidated external-review preparation stage, with **no routine approvals**. That
+stage produced the safety-requirement set (`MCD-08`), the G2 schema design (`MCD-09`), version pinning (`MCD-10`),
+the reviewer checklist (`MCD-11`) and this consistency check. **No gate advanced.**
 Red-phase suite re-based **32 → 35** criteria; all **35 fail** on the current snapshot.
 
 ## Read in this order
 
 | # | Document | What it answers |
 |---|---|---|
-| 1 | **`MCD-04.md`** — decisions ledger | D-1…D-11, TD-01 transmission record, gate state, Phase-0 definition |
+| 1 | **`MCD-04.md`** — decisions ledger | D-1…D-12, TD-01 transmission record, gate state, Phase-0 definition |
 | 2 | **`MCD-07.md`** — group cross-reference | **read before any ordering discussion**: 1A–1H ↔ G1–G6, authoritative |
 | 3 | **`MCD-06.md`** — R1–R10 disposition register | what was accepted/amended; the R4/R5 restatements |
-| 4 | **`MCD-01.md`** — coordination dossier | state, reconciliation, 6-group plan, blockers, armed sequence |
+| 4 | **`MCD-01.md`** — coordination dossier | state, reconciliation, 6-group plan, 10 blockers, armed sequence |
 | 5 | **`MCD-02.md`** — the 35 criteria | per-test root cause, pre-fix result, post-fix acceptance condition |
 | 6 | **`MCD-03.md`** — A14-08 correction | the claim withdrawn, corrected finding, reproducible evidence |
 | 7 | **`MCD-05.md`** — external review package | reviewer instructions, task list, signature block |
+| 8 | **`MCD-08.md`** — **safety requirements SR-01…SR-28** | authoritative, provenance-tagged; closes GOV-01 |
+| 9 | **`MCD-09.md`** — G2 schema design | attempt + scope identity; **design only, no migration** |
+| 10 | **`MCD-10.md`** — version pinning | exact versions, divergence, reproducibility limits |
+| 11 | **`MCD-11.md`** — reviewer checklist A–I | what must be reproduced, inspected, and signed off |
+| 12 | **`CONSISTENCY_CHECK.md`** | measured evidence that the package agrees with itself |
 | — | `../AUDIT_REPORT_INDEP-AUDIT-01.md` | the independent audit (49 cases); **unedited**, correction appended |
 
 ## Group numbering (one line — full table in `MCD-07.md`)
@@ -90,26 +97,25 @@ callers" structurally; #24 requires a persisted scope identity rather than a sym
 | A14-08 numeric-collision claim | **WITHDRAWN**; corrected finding accepted (D-2) |
 | Paper-only, snapshot, databases | **PRESERVED, unchanged** (D-6) |
 
-## The 11 blockers
+## The 10 blockers
 
 | # | Blocker | Class | Clears when |
 |---|---|---|---|
-| 1 | **GOV-01 / TD-01** directive §2 truncated | governance | owner re-sends full safety list |
-| 2 | **GOV-02** no genuinely external reviewer | governance | reviewer engaged and signed (`MCD-05` §4) |
-| 3 | No authorisation of a bounded scope | governance | owner grants after §1–2 clear |
-| 4 | **H01** no authoritative source checkpoint | evidence | upstream/provider capability proof |
-| 5 | **H02** no canonical identity/finality | evidence | real chain identity evidence |
-| 6 | **H03** no real decoder evidence | evidence | version-specific operation data |
-| 7 | **H04** no historical gap reconstruction | evidence | history that does not currently exist |
-| 8 | **H05** no forward / calibration / performance evidence | evidence | approved wallets + time |
-| 9 | Runtime DB state unverified (excluded by design) | evidence | separate explicit approval |
-| 10 | Cross-version reproducibility unpinned | technical | pin versions + parity evidence |
-| 11 | **GOV-09** G2 schema design (attempt + scope identity) unspecified | process | design doc before code, post-approval |
+| 1 | **GOV-02** no genuinely external reviewer | governance | reviewer engaged and signed (`MCD-05` §4) |
+| 2 | No authorisation of a bounded scope | governance | owner grants after §1–2 clear |
+| 3 | **H01** no authoritative source checkpoint | evidence | upstream/provider capability proof |
+| 4 | **H02** no canonical identity/finality | evidence | real chain identity evidence |
+| 5 | **H03** no real decoder evidence | evidence | version-specific operation data |
+| 6 | **H04** no historical gap reconstruction | evidence | history that does not currently exist |
+| 7 | **H05** no forward / calibration / performance evidence | evidence | approved wallets + time |
+| 8 | Runtime DB state unverified (excluded by design) | evidence | separate explicit approval |
+| 9 | **GOV-15** cross-version reproducibility unpinned | technical | parity evidence (`MCD-10`) |
+| 10 | **GOV-14** `capture_frontiers` key `(wallet, endpoint)` cannot be fixed additively | technical | new table or rebuild, decided at G2 (`MCD-09`) |
 
-Blockers 4–8 mean CopyLab **cannot currently demonstrate it would copy a real wallet correctly even if every
+Blockers 3–7 mean CopyLab **cannot currently demonstrate it would copy a real wallet correctly even if every
 A14 defect were fixed.** Fixing A14 improves the instruments; it does not supply the measurements.
 
-*(GOV-08 and GOV-12 were closed this cycle by D-9 and D-11; they no longer count as blockers.)*
+*(Closed since the previous edition: **GOV-01** (D-12 → `MCD-08`), **GOV-08** (D-9), **GOV-09 design** (D-12 → `MCD-09`), **GOV-11**, **GOV-12** (D-11), and the version-documentation portion of the cross-version blocker (now `MCD-10`; parity itself is GOV-15). GOV-01 also removes TD-01 from the blocker list — the transmission discrepancy remains on the record, but its safety content is now captured in `MCD-08`.)*
 
 ## Package contents
 
@@ -117,10 +123,15 @@ A14 defect were fixed.** Fixing A14 improves the instruments; it does not supply
 MCD-01.md                          coordination dossier (plan, blockers, sequence)
 MCD-02.md                          35 criteria, individually specified
 MCD-03.md                          A14-08 correction record + reproducible evidence
-MCD-04.md                          owner decisions D-1..D-11, TD-01, gate state
+MCD-04.md                          owner decisions D-1..D-12, TD-01, gate state
 MCD-05.md                          external review package + signature block
 MCD-06.md                          R1-R10 disposition register (D-9)
 MCD-07.md                          group cross-reference 1A-1H <-> G1-G6 (D-11)
+MCD-08.md                          safety requirements SR-01..SR-28 (authoritative, D-12)
+MCD-09.md                          G2 schema design: attempt + scope identity (design only)
+MCD-10.md                          environment and version pinning
+MCD-11.md                          reviewer checklist A-I
+CONSISTENCY_CHECK.md               measured package self-consistency evidence
 README.md                          this file
 tools/acceptance_suite.py          the 35 executable criteria
 tools/REPRODUCE.md                 exact reproduction commands + isolation
