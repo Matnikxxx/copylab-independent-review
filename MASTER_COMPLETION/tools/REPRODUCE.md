@@ -7,9 +7,9 @@
 
 ## 0. What you are reproducing
 
-The current CopyLab snapshot (`288a69f…`) violates **32 concrete safety invariants**. The suite
-`tools/acceptance_suite.py` asserts the *desired* behaviour for each. Against this snapshot **all 32 must
-fail**. If any passes, either the snapshot drifted or the test is defective — investigate before proceeding,
+The current CopyLab snapshot (`288a69f…`) violates **35 concrete safety invariants**. The suite
+`tools/acceptance_suite.py` asserts the *desired* behaviour for each. Against this snapshot **all 35 must
+fail**. (Originally 32; R4/R5 owner amendments added and strengthened three — see `MCD-06.md`.) If any passes, either the snapshot drifted or the test is defective — investigate before proceeding,
 because a false green is the failure mode this suite exists to prevent.
 
 No fixes are included. This is a **red** harness.
@@ -89,11 +89,11 @@ PYTHONPATH=/tmp/noneti PYTHONDONTWRITEBYTECODE=1 \
 **Expected:**
 
 ```
-TOTAL 32   PASS 0   FAIL 32   -> phase=RED
+TOTAL 35   PASS 0   FAIL 35   -> phase=RED
 ```
 
-Exit code **1** is the expected result. Exit 0 would mean every invariant already holds — impossible for
-this snapshot, and a finding in itself.
+Exit code **1** is the expected result. Exit code **0** would mean every invariant already holds — impossible
+for this snapshot, and a finding in itself.
 
 ## 6. Compare against my result
 
@@ -108,6 +108,10 @@ print('only in stored:',sorted(set(bm)-set(am)))
 print('result differs:',[(k,am[k],bm[k]) for k in am.keys()&bm.keys() if am[k]!=bm[k]])
 PY
 ```
+
+> **If a test ERRORs rather than FAILs**, check the A14-09 dependency (jsdom, §4) — a missing dependency
+> produces an ERROR, which is a failure for the right reason but a weak one. I fixed this once (`MCD-02`
+> self-validation item 6) after it produced a *false red*. Report any ERROR separately from a FAIL.
 
 ## 7. Reproduce the 49 probe cases
 
@@ -139,7 +143,7 @@ PYTHONPATH=/tmp/noneti PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s
 # expect: Ran 119 tests ... OK
 ```
 
-This is the project's sole positive control. **Note what that means:** 119/119 pass while all 32 invariants
+This is the project's sole positive control. **Note what that means:** 119/119 pass while all 35 invariants
 above are violated. That is `F-01`, and it is why `MCD-01` R2 asks for the count to be demoted from an
 acceptance gate to a regression guard.
 
@@ -162,7 +166,7 @@ PY
 
 For each disagreement with `MASTER_COMPLETION/evidence/red-phase-results.json`, record: case id, expected,
 observed, your environment, and whether you believe my test or the system is wrong. Both are useful. A
-test that passes pre-fix is a **suite defect** and should be reported as such — I found five such defects in
+test that passes pre-fix is a **suite defect** and should be reported as such — I found six such defects in
 my own first draft (`MCD-01` §5.3), including one that contradicted my own audit report.
 
 If you can **falsify** any of the 49 probe cases, that is the most valuable thing you can return: it means a

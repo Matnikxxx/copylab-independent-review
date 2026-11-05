@@ -344,43 +344,94 @@ def t(h):
 # A14-06  every received attempt must be durable
 # =====================================================================
 @test('A14-06', 'all_failed_attempt_bodies_retained', 'MEDIUM',
-      'All three received retry bodies must be durable after total failure')
+      'Every received attempt body AND its metadata must be durable after total failure (R4 AMENDED)')
 def t(h):
     from lab.store import now
     s = h.store('a6a.sqlite')
+    base = now()
+    ATTEMPTS = [('503', 'body-1', 'err-503'), ('502', 'body-2', 'err-502'), ('429', 'body-3', 'err-429')]
 
     class FailThree:
         def get(self, *a, **k):
-            self.attempt_log = [{'received': now(), 'http_code': c, 'body': b, 'error': 'e'}
-                                for c, b in [('503', 'body-1'), ('502', 'body-2'), ('429', 'body-3')]]
+            self.attempt_log = [{'received': base + i, 'http_code': c, 'body': b, 'error': e}
+                                for i, (c, b, e) in enumerate(ATTEMPTS)]
             self.last_raw = 'body-3'
             raise RuntimeError('all failed')
     try:
         h.integrity(s).collect(FailThree(), 'fixture-wallet', '/v2/trades', {'user': 'fixture-wallet'})
     except RuntimeError:
         pass
-    raws = [r['raw'] for r in s.rows('SELECT raw FROM transport_deliveries')]
-    assert len(raws) == 3, f'durable bodies={raws} (expected all 3)'
+    rows = s.rows('SELECT * FROM transport_deliveries ORDER BY id')
+    # R4: every relevant attempt body must be preserved, not just the last.
+    raws = [r['raw'] for r in rows]
+    assert len(rows) == 3, f'{len(rows)} durable rows for 3 received attempts: {raws}'
+    for code, body, err in ATTEMPTS:
+        assert body in raws, f'attempt body {body!r} lost; durable={raws}'
+    # R4: AND associated metadata per attempt (code, error, receipt time), not just the body.
+    for i, (code, body, err) in enumerate(ATTEMPTS):
+        row = next(r for r in rows if r['raw'] == body)
+        blob = ' '.join(str(v) for v in row.values())
+        assert code in blob, f'attempt {i+1} body preserved without its HTTP code {code}'
+        assert err in blob, f'attempt {i+1} body preserved without its error {err!r}'
+        assert abs(float(row['received']) - (base + i)) < 2, \
+            f'attempt {i+1} receipt time not preserved (received={row["received"]}, expected~{base+i})'
 
 
 @test('A14-06', 'successful_body_survives_later_failure', 'MEDIUM',
-      'A successful response received before a later failure must remain durable')
+      'An HTTP 200 body received before a later timeout must survive WITH its success metadata (R4 AMENDED)')
 def t(h):
     from lab.store import now
     s = h.store('a6b.sqlite')
+    base = now()
 
     class PartialThenRaise:
         def get(self, *a, **k):
-            self.attempt_log = [{'received': now(), 'http_code': '200', 'body': 'good-200', 'error': ''},
-                                {'received': now(), 'http_code': '504', 'body': 'bad-504', 'error': 'timeout'}]
+            self.attempt_log = [{'received': base, 'http_code': '200', 'body': 'good-200', 'error': ''},
+                                {'received': base + 5, 'http_code': '504', 'body': 'bad-504', 'error': 'timeout'}]
             self.last_raw = 'bad-504'
             raise TimeoutError('timeout')
     try:
         h.integrity(s).collect(PartialThenRaise(), 'fixture-wallet', '/v2/trades', {'user': 'fixture-wallet'})
     except TimeoutError:
         pass
-    raws = [r['raw'] for r in s.rows('SELECT raw FROM transport_deliveries')]
-    assert 'good-200' in raws, f'durable bodies={raws}; the successful body was destroyed'
+    rows = s.rows('SELECT * FROM transport_deliveries ORDER BY id')
+    raws = [r['raw'] for r in rows]
+    assert 'good-200' in raws, f'successful body destroyed; durable={raws}'
+    assert 'bad-504' in raws, f'failing body destroyed; durable={raws}'
+    ok = next(r for r in rows if r['raw'] == 'good-200')
+    blob = ' '.join(str(v) for v in ok.values())
+    assert '200' in blob, f'successful attempt lost its HTTP 200 code: {blob[:120]}'
+    assert abs(float(ok['received']) - base) < 2, 'successful attempt lost its receipt time'
+
+
+@test('A14-06', 'attempt_order_and_metadata_distinguishable', 'MEDIUM',
+      'Concurrent same-body attempts must remain individually distinguishable with metadata (R4 AMENDED)')
+def t(h):
+    from lab.store import now
+    s = h.store('a6d.sqlite')
+    base = now()
+
+    class SameBodyThreeCodes:
+        def get(self, *a, **k):
+            # Identical body text, three different outcomes. Collapsing on body text would
+            # hide two attempts, so per-attempt identity+metadata (not body dedup) is required.
+            self.attempt_log = [{'received': base + i, 'http_code': c, 'body': 'identical-body', 'error': f'e{i}'}
+                                for i, c in enumerate(['500', '502', '503'])]
+            self.last_raw = 'identical-body'
+            raise RuntimeError('all failed')
+    try:
+        h.integrity(s).collect(SameBodyThreeCodes(), 'fixture-wallet', '/v2/trades', {'user': 'fixture-wallet'})
+    except RuntimeError:
+        pass
+    rows = s.rows('SELECT * FROM transport_deliveries ORDER BY id')
+    assert len(rows) == 3, f'{len(rows)} rows for 3 attempts with identical bodies (attempt identity lost)'
+    seen = set()
+    for r in rows:
+        blob = ' '.join(str(v) for v in r.values())
+        codes = [c for c in ('500', '502', '503') if c in blob]
+        assert codes, f'attempt row carries no HTTP code: {blob[:120]}'
+        seen.add(codes[0])
+    assert seen == {'500', '502', '503'}, f'distinct per-attempt outcomes collapsed: {seen}'
 
 
 @test('A14-06', 'attempt_without_last_raw_is_durable', 'MEDIUM',
@@ -397,7 +448,8 @@ def t(h):
         h.integrity(s).collect(NoRaw(), 'fixture-wallet', '/v2/trades', {'user': 'fixture-wallet'})
     except RuntimeError:
         pass
-    raws = [r['raw'] for r in s.rows('SELECT raw FROM transport_deliveries')]
+    rows = s.rows('SELECT * FROM transport_deliveries')
+    raws = [r['raw'] for r in rows]
     assert 'dns-failure' in raws, f'durable bodies={raws}; nothing persisted at all'
 
 
@@ -466,6 +518,74 @@ def t(h):
         if b and 'CLOSED' in b['params']:
             bad.append(f)
     assert not bad, f'frontier published for a CLOSED walk under an OPEN request: {bad}'
+
+
+@test('A14-07', 'collect_enforces_scope_without_allowed', 'MEDIUM',
+      'collect() itself must reject/isolate a scope mismatch, independent of allowed() or callers (R5 AMENDED)')
+def t(h):
+    s = h.store('a7c.sqlite')
+    i = h.integrity(s)
+
+    class Interrupt:
+        def __init__(self): self.n = 0
+        def get(self, *a, **k):
+            self.n += 1
+            if self.n == 1:
+                return {'data': [], 'pagination': {'has_more': True, 'next_cursor': 'cur-1'}}
+            raise RuntimeError('interrupted')
+
+    class Resume:
+        def __init__(self): self.calls = []
+        def get(self, *a, **k):
+            self.calls.append(k)
+            return {'data': [], 'pagination': {'has_more': False, 'next_cursor': None}}
+
+    try:
+        i.collect(Interrupt(), 'fixture-wallet', '/v2/positions', {'user': 'fixture-wallet', 'status': 'CLOSED'})
+    except RuntimeError:
+        pass
+    batches_before = len(s.rows('SELECT * FROM collection_batches'))
+    r = Resume()
+    rejected = False
+    try:
+        i.collect(r, 'fixture-wallet', '/v2/positions', {'user': 'fixture-wallet', 'status': 'OPEN'})
+    except Exception:
+        rejected = True
+    # Acceptable outcomes are exactly two: explicit rejection, or an INDEPENDENT new batch
+    # carrying the requested scope. Silently reusing the pending batch is the defect.
+    # Note: allowed() is never consulted here, and no caller-side scope check is performed.
+    batches_after = len(s.rows('SELECT * FROM collection_batches'))
+    forked = batches_after > batches_before
+    if not rejected and not forked:
+        sent = r.calls[0] if r.calls else {}
+        raise AssertionError(f'scope mismatch neither rejected nor forked: reused pending batch, '
+                             f'sent status={sent.get("status")!r} for a requested OPEN scope')
+    if forked:
+        newest = s.one('SELECT * FROM collection_batches ORDER BY id DESC LIMIT 1')
+        assert 'OPEN' in str(newest.get('params')), \
+            f'forked batch does not carry the requested scope: {newest.get("params")}'
+
+
+@test('A14-07', 'scope_identity_persisted_per_batch', 'MEDIUM',
+      'Each batch must persist an explicit scope identity so resume validity never depends on wallet+endpoint (R5 AMENDED)')
+def t(h):
+    s = h.store('a7d.sqlite')
+    i = h.integrity(s)
+
+    class Ok:
+        def get(self, *a, **k):
+            return {'data': [], 'pagination': {'has_more': False, 'next_cursor': None}}
+
+    i.collect(Ok(), 'fixture-wallet', '/v2/positions', {'user': 'fixture-wallet', 'status': 'OPEN', 'limit': 500})
+    cols = [c[1] for c in s.db.execute('PRAGMA table_info(collection_batches)').fetchall()]
+    batch = s.one('SELECT * FROM collection_batches ORDER BY id DESC LIMIT 1')
+    # A scope identity must be an explicit, comparable field (e.g. scope_hash), not implied
+    # by the (wallet, endpoint) lookup key that collect() uses to find resumable work.
+    explicit = [c for c in cols if 'scope' in c.lower() or 'hash' in c.lower() or 'intent' in c.lower()]
+    assert explicit, (f'collection_batches has no explicit scope-identity column (columns={cols}); '
+                      f'resume validity rests on wallet+endpoint alone')
+    value = next((batch[c] for c in explicit if batch.get(c)), None)
+    assert value, f'scope identity column(s) {explicit} present but unpopulated: {batch}'
 
 
 # =====================================================================

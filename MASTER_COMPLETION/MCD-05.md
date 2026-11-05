@@ -33,11 +33,13 @@ Everything is in this repository. **Nothing needs to be assembled.**
 | 2 | Transfer instructions | `copylab-external-review-INSTRUCTIONS.md` | safe extraction script, exclusion list, known limits |
 | 3 | Independent audit | `AUDIT_REPORT_INDEP-AUDIT-01.md` | 49 reproduced cases, new findings, H01–H05 assessment |
 | 4 | Coordination dossier | `MASTER_COMPLETION/MCD-01.md` | consolidated plan, 6 groups, G6 external programme, blockers |
-| 5 | **32 acceptance criteria** | `MASTER_COMPLETION/MCD-02.md` | per-test root cause, pre-fix result, post-fix condition |
+| 5 | **35 acceptance criteria** | `MASTER_COMPLETION/MCD-02.md` | per-test root cause, pre-fix result, post-fix condition |
+| 5b | **R1–R10 disposition register** | `MASTER_COMPLETION/MCD-06.md` | what was accepted/amended, incl. R4/R5 restatements |
+| 5c | **Group cross-reference** | `MASTER_COMPLETION/MCD-07.md` | resolves 1A–1H ↔ G1–G6 (read this before assessing ordering) |
 | 6 | **A14-08 correction record** | `MASTER_COMPLETION/MCD-03.md` | the claim I withdrew, and why |
 | 7 | Decisions ledger | `MASTER_COMPLETION/MCD-04.md` | gate state, TD-01, what counts as Phase 0 satisfied |
 | 8 | **Executable red suite** | `MASTER_COMPLETION/tools/acceptance_suite.py` | 32 tests, each asserting a safe invariant |
-| 9 | **Red-phase result** | `MASTER_COMPLETION/evidence/red-phase-results.json` | 32/32 FAIL, with per-case detail |
+| 9 | **Red-phase result** | `MASTER_COMPLETION/evidence/red-phase-results.json` | 35/35 FAIL, with per-case detail |
 | 10 | Probe corpus (49 cases) | `MASTER_COMPLETION/evidence/probes/` | my reproduction scripts |
 | 11 | Probe outputs | `MASTER_COMPLETION/evidence/results/` | hashed, as run |
 | 12 | **Reproduction guide** | `MASTER_COMPLETION/tools/REPRODUCE.md` | exact commands, isolation, expected output |
@@ -79,7 +81,7 @@ every gate in the existing plan cites it.
 Follow `tools/REPRODUCE.md` §3–§5 (offline isolation first, then the suite).
 
 ```
-EXPECTED: TOTAL 32  PASS 0  FAIL 32  -> phase=RED
+EXPECTED: TOTAL 35  PASS 0  FAIL 35  -> phase=RED
 ```
 
 Exit code **1** is correct and expected. **If any test passes, stop and report:** either the snapshot drifted
@@ -133,7 +135,7 @@ Independence basis      : [ ] outside Arena.ai Agent Mode  [ ] other: __________
 Date                    : ______________
 Snapshot verified       : [ ] SHA-256 matched   Member count: ______
 Own test run 119/119?   : observed count ______  Assessment of F-01: ____________________
-Red suite result        : PASS ____  FAIL ____   Phase: ______   (expected 0 / 32 / RED)
+Red suite result        : PASS ____  FAIL ____   Phase: ______   (expected 0 / 35 / RED)
 Probe cases falsified   : ______________________________________________
 A14-08 correction       : [ ] CONFIRMED  [ ] REJECTED (evidence attached)
 H01-H05 BLOCKED         : [ ] AGREE  [ ] DISAGREE (which: ______ )
@@ -163,7 +165,7 @@ Signature: ______________________
 Stated so nobody pressures them later:
 
 - **Do not** accept `INDEP-AUDIT-01` or `MCD-01` as evidence. They are the *thing under review*.
-- **Do not** treat the 32/32 red result as a pass — it is a demonstration that the system is currently unsafe.
+- **Do not** treat the 35/35 red result as a pass — it is a demonstration that the system is currently unsafe.
 - **Do not** rely on the archived `adversarial-results.json` without re-running; it is the implementation
   authors' own script.
 - **Do not** open the runtime databases. If the review needs them, escalate for separate approval.
@@ -183,7 +185,7 @@ Stated so nobody pressures them later:
 | L3 | Runtime DBs never inspected (by design) | their integrity is an **unverified claim** from my position | `INDEP-AUDIT-01` §10 |
 | L4 | Git state unverifiable — no `.git` in the archive | HEAD/working-tree claims are internal-consistency only | `INDEP-AUDIT-01` §10 |
 | L5 | I corrected one of my own findings (A14-08) | other findings deserve the same scepticism | `MCD-03` |
-| L6 | Suite found 5 defects in itself, 3 producing **false green** | the harness is now validated, but a new case could still be wrong | `MCD-01` §5.3 |
+| L6 | Suite found 6 defects in itself (3 false green, 1 false red) | the harness is now validated, but a new case could still be wrong | `MCD-01` §5.3 |
 | L7 | Directive §2 truncated (TD-01) | invariant set is reconstructed, possibly incomplete | `MCD-04` §3 |
 
 ---
@@ -206,8 +208,8 @@ Those remain separately gated no matter what the reviewer signs (`INV-01`, `INV-
 | Requirement | State |
 |---|---|
 | Sealed artefact hash-verifiable | ✔ |
-| Reproduction path documented and tested | ✔ (32/32 red reproduced twice) |
-| Per-test root cause + acceptance condition | ✔ 32/32 (`MCD-02`) |
+| Reproduction path documented and tested | ✔ (35/35 red reproduced) |
+| Per-test root cause + acceptance condition | ✔ 35/35 (`MCD-02`) |
 | Own correction disclosed and reproducible | ✔ (`MCD-03`) |
 | Limitations disclosed | ✔ 7 items above |
 | Signature block with defined decisions | ✔ §4 |

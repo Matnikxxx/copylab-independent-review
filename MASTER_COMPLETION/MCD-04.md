@@ -12,10 +12,13 @@ decision #1, and the standing authorisation state. Everything here is citable by
 |---|---|---|
 | Phase 0 — independent review satisfied | **NOT SATISFIED** | owner, this message |
 | Phase 1A — implementation authorised | **NOT AUTHORISED** (explicit) | owner, decision #5 |
-| G1 — implementation authorised | **NOT AUTHORISED** (explicit) | owner, decision #5 |
-| Red-phase suite — acceptance baseline | **ADOPTED, PROVISIONAL** | owner, decision #4 |
-| External review — mandatory | **YES, MANDATORY, OUTSTANDING** | owner, decision #3 |
-| A14-08 numeric-collision claim | **WITHDRAWN**, corrected finding accepted | owner, decision #2 |
+| G1 — implementation authorised | **NOT AUTHORISED** (explicit) | owner, decision D-5 |
+| G1–G5 — implementation authorised | **NOT AUTHORISED** (reaffirmed) | owner, decision D-10 |
+| Red-phase suite — acceptance baseline | **ADOPTED, PROVISIONAL** (now 35 criteria) | owner, D-4 + D-9 |
+| External review — mandatory | **YES, MANDATORY, OUTSTANDING** | owner, D-3 |
+| R1–R10 plan revisions | **DISPOSITIONED** (8 ACCEPT, 2 AMEND) | owner, D-9 |
+| 1A–1H ↔ G1–G6 numbering | **RESOLVED** (`MCD-07.md`) | owner, D-11 |
+| A14-08 numeric-collision claim | **WITHDRAWN**, corrected finding accepted | owner, D-2 |
 | Paper-only restriction | **IN FORCE, unchanged** | standing |
 | Source snapshot / databases | **PRESERVED, unchanged** | standing |
 
@@ -71,15 +74,18 @@ substitute for that sign-off.
 > *Owner:* "Adopt the 32-case suite provisionally as the proposed acceptance baseline. It must remain subject
 > to independent review. Every test must have a documented intended failure reason, reproducible pre-fix
 > result and corresponding post-fix acceptance condition."
+>
+> *(Quote preserved verbatim. The suite was 32 at the time of D-4 and became **35** under D-9/R4/R5; the
+> obligations below were re-verified for all 35.)*
 
 **Implemented — condition by condition:**
 
 | Owner condition | Where satisfied | Verified |
 |---|---|---|
 | provisional / subject to independent review | `MCD-02` header + "Provisional status is load-bearing" | ✔ |
-| documented intended failure reason | `MCD-02` §1–32, "Intended failure reason (root cause)" per test | ✔ 32/32 |
-| reproducible pre-fix result | `MCD-02` per test + `evidence/red-phase-results.json` + `REPRODUCE.md` | ✔ 32/32 |
-| corresponding post-fix acceptance condition | `MCD-02` §1–32, "Post-fix acceptance condition" per test | ✔ 32/32 |
+| documented intended failure reason | `MCD-02` §1–35, "Intended failure reason (root cause)" per test | ✔ 35/35 |
+| reproducible pre-fix result | `MCD-02` per test + `evidence/red-phase-results.json` + `REPRODUCE.md` | ✔ 35/35 |
+| corresponding post-fix acceptance condition | `MCD-02` §1–35, "Post-fix acceptance condition" per test | ✔ 35/35 |
 
 - Adoption is **provisional**, and I have recorded the asymmetry: criteria may be **strengthened** by a
   reviewer without further approval; **weakening** one requires written rationale in the open items.
@@ -120,6 +126,40 @@ I have deliberately not pre-judged it.
 **Implemented:** `MCD-01` §7 already sequences G1→G5 as a single cycle; this run adds the programme-level
 authorisation record in §7 below, so that the *one* approval event the owner wants is a single pre-specified
 object rather than five separate asks.
+
+### D-9 · R1–R10 dispositioned (8 ACCEPT, 2 AMEND)
+
+> *Owner:* formal dispositions R1 ACCEPT · R2 ACCEPT · R3 ACCEPT · **R4 AMEND** · **R5 AMEND** · R6 ACCEPT ·
+> R7 ACCEPT · R8 ACCEPT · R9 ACCEPT · R10 ACCEPT, with required amendments to R4 and R5.
+
+**Implemented:**
+- `MCD-06.md` is the disposition register: owner wording verbatim, assessment, restated acceptance criterion,
+  criteria added/strengthened, residual scope limits.
+- **Both amendments were applied by strengthening executable criteria, not by re-wording prose.** R4 → A14-06
+  restated as a positive obligation over every attempt body **and its metadata**, including a successful
+  HTTP 200 followed by a later timeout/exception (3 criteria → 4). R5 → scope correctness *inside `collect()`*
+  for every invocation and resumed batch, independent of `allowed()` and callers (2 criteria → 4).
+- Suite **32 → 35**; red phase re-run: **35/35 FAIL**.
+- I accepted both amendments as corrections of my own under-specification (R4 described the defect rather than
+  the obligation; R5 left the mechanism to the implementer and permitted a defence-in-depth inversion).
+- **Obligation created:** GOV-09 (G2 design doc must specify attempt-identity and scope-identity schema before
+  code), GOV-10 (reviewer to confirm the restatements are correctly encoded).
+
+### D-10 · G1–G5 remain NOT AUTHORISED
+
+> *Owner:* "G1 remains NOT AUTHORISED. G1–G5 remain NOT AUTHORISED."
+
+**Implemented:** reaffirmed in every artefact. No implementation, no design doc produced beyond scope
+statements already recorded, no code touched. `MCD-04` §7's single programme authorisation remains **NOT
+GRANTED**.
+
+### D-11 · Resolve the 1A–1H / G1–G6 numbering ambiguity
+
+> *Owner:* "Maintain one explicit cross-reference table throughout the package."
+
+**Implemented:** `MCD-07.md` is the authoritative single mapping table. **Neither scheme was renumbered** —
+renumbering the project's own plan would rewrite an artefact under review (`INV-09`/`INV-11`). Every artefact
+now cites a group as `GX (plan 1Y)`, and `MCD-02`'s Group column carries both. GOV-12 **CLOSED**.
 
 ---
 
@@ -215,13 +255,13 @@ Phase 0 is satisfied **only** when all of the following exist:
 
 1. A reviewer **outside this tooling stack**, named and accountable (§ `MCD-05` §4), has:
    - verified the archive hash independently;
-   - re-run the 32-case red suite and obtained **32/32 FAIL**;
+   - re-run the 35-case red suite and obtained **35/35 FAIL**;
    - attempted to falsify the 49 probe cases and reported the outcome, including any they could break;
    - independently assessed the A14-08 correction (`MCD-03` §3) — confirm or reject;
    - assessed the H01–H05 BLOCKED classifications and the G1–G6 ordering;
    - **signed** with `APPROVE FOR BOUNDED PHASE 1A`, `REVISE PLAN`, or `BLOCK`.
 2. GOV-01 (full directive §2) is supplied and any resulting invariant gap is reconciled upward.
-3. R1–R10 plan revisions are applied or explicitly rejected with reasoning.
+3. R1–R10 plan revisions are applied or explicitly rejected with reasoning — **dispositioned 2026-11-05 (D-9): 8 ACCEPT, 2 AMEND, applied; the two amendments are encoded as criteria #18–#25** (`MCD-06`).
 4. The owner explicitly authorises the bounded scope (currently withheld, D-5).
 
 **My contribution satisfies items 1's *inputs* and nothing more.** Items 1 (the signature), 2, 3 and 4 are
@@ -239,7 +279,7 @@ in advance so it can be granted once, cleanly, after external review.
 
 | Attribute | Value |
 |---|---|
-| **Scope** | Groups G1–G5 exactly as specified in `MCD-01` §4; 32 criteria in `MCD-02` as acceptance |
+| **Scope** | Groups G1–G5 exactly as specified in `MCD-01` §4 (mapping in `MCD-07`); **35 criteria** in `MCD-02` as acceptance, incl. R4/R5 amendments (`MCD-06`) |
 | **Explicitly excluded** | G6 (external evidence programme), any runtime activation, any wallet onboarding, any real-money capability (permanent, INV-01) |
 | **Entry conditions** | external review signed; GOV-01 closed; R1–R10 dispositioned |
 | **Per-group discipline** | red re-confirm → fix → green → independent re-run → STOP; unchanged from `MCD-01` §5.4 |
@@ -250,7 +290,8 @@ in advance so it can be granted once, cleanly, after external review.
 authorisation does not skip the per-group evidence requirements. The owner authorises the *programme*; each
 group still has to earn its own green.
 
-**Current state of this object: NOT GRANTED.** G1 explicitly withheld (D-5), and entry conditions unmet.
+**Current state of this object: NOT GRANTED.** G1 explicitly withheld (D-5); G1–G5 reaffirmed withheld (D-10);
+entry conditions unmet.
 
 ---
 
@@ -265,8 +306,12 @@ group still has to earn its own green.
 | GOV-05 | A14-08 correction not yet acknowledged in audit record | MEDIUM | OPEN | owner + reviewer |
 | GOV-06 | Evidence provenance binding (R9/F-02) unimplemented | MEDIUM | OPEN | implementer, in G1/G3 |
 | GOV-07 | Reviewer to re-derive A14-08 corrected scope | MEDIUM | OPEN | external reviewer |
-| GOV-08 | R1–R10 plan revisions not dispositioned | HIGH | OPEN | owner + implementer |
-| — | 32 criteria provisional acceptance | — | **CLOSED** by D-4 | owner |
+| GOV-08 | R1–R10 disposition | HIGH | **CLOSED** by D-9 → `MCD-06.md` | resolved |
+| GOV-09 | G2 design doc must specify attempt-identity + scope-identity schema before code | MEDIUM | OPEN | implementer, post-approval |
+| GOV-10 | Reviewer to confirm R4/R5 restatements correctly encoded (#18–#25) | MEDIUM | OPEN | external reviewer |
+| GOV-11 | Criteria re-based 32 → 35 across all artefacts | — | **CLOSED** this run | resolved |
+| GOV-12 | 1A–1H ↔ G1–G6 numbering ambiguity | MEDIUM | **CLOSED** → `MCD-07.md` | resolved |
+| — | criteria provisional acceptance (32 at D-4 → 35 after D-9) | — | **CLOSED** by D-4/D-9 | owner |
 
 ---
 

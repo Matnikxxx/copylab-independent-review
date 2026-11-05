@@ -11,9 +11,12 @@ artefacts and are treated here as **inputs to be revised**, not replaced.
 
 > **OWNER DECISIONS APPLIED 2026-11-05** — see `MCD-04.md` for the authoritative ledger.
 > D-1 TD-01 transmission record (no relaxation) · D-2 A14-08 correction accepted → `MCD-03.md`
-> D-3 external review mandatory · D-4 32-case suite **adopted provisionally** → `MCD-02.md`
+> D-3 external review mandatory · D-4 red-phase suite **adopted provisionally** → `MCD-02.md`
 > **D-5 G1 explicitly NOT AUTHORISED** · D-6 preservation standing · D-7 Phase 0 must not be marked complete
 > D-8 single coordinated programme authorisation defined in `MCD-04` §7
+> **D-9 R1–R10 dispositioned** (8 ACCEPT, 2 AMEND) → `MCD-06.md`; criteria **32 → 35**
+> **D-10 G1–G5 remain NOT AUTHORISED** (reaffirmed)
+> **D-11 group cross-reference** 1A–1H ↔ G1–G6 → `MCD-07.md` (authoritative)
 > Gate state unchanged: **Phase 0 NOT SATISFIED · Phase 1A NOT AUTHORISED.**
 
 ---
@@ -153,6 +156,13 @@ downward (A14-08 §0.4), one had its blast radius raised (A14-06).
 These are the ten items from `INDEP-AUDIT-01` §8.2, restated as **blocking changes** with owner action.
 They are not advisory.
 
+> **DISPOSITIONED 2026-11-05 (D-9) — see `MCD-06.md` for the register.**
+> 8 ACCEPT (R1, R2, R3, R6, R7, R8, R9, R10) · 2 AMEND (R4, R5).
+> The amendments were applied by **strengthening executable criteria**, not by re-wording prose:
+> A14-06 restated as a positive obligation over every attempt body **and its metadata** (incl. a successful
+> HTTP 200 followed by a later timeout); A14-07 enforced **inside `collect()`** independent of `allowed()` and
+> callers. The suite grew **32 → 35**; the red phase was re-run and **35/35 fail**.
+
 | # | Change | Why it blocks | Where |
 |---|---|---|---|
 | R1 | Each group must record a **red→green artefact against a frozen pre-fix snapshot** | "tests pass" can be satisfied by tests that cannot detect the defect | §6 of plan |
@@ -194,6 +204,10 @@ none is aspirational.
 ---
 
 ## 4. Consolidated remediation plan
+
+> **Group numbering:** this section defines **G1–G6**. The project's `MASTER_REMEDIATION_PLAN.md` defines
+> **1A–1H**. Both schemes remain valid and neither is renumbered; **`MCD-07.md` is the authoritative
+> cross-reference.** In one line: G1=1A · G2=1B+1E+1F+1G · G3=1C · G4=1D · G5=1H · G6=no plan equivalent.
 
 Six groups. Each has a **single owner-action**, a **frozen pre-fix snapshot**, a **red set that must exist
 before code changes**, and a **stop gate**. No group may begin before the Phase 0 conditions in §9 clear.
@@ -247,8 +261,14 @@ writes; digest distinguishes every genuine stored-type pair.
 ---
 
 ### G2 — Evidence integrity: every received byte durable, every scope immutable
-**Findings:** A14-02 (HIGH), A14-06 (MEDIUM, blast radius raised), A14-07 (MEDIUM), A14-05 (MEDIUM),
-F-04 (MEDIUM), F-05 (MEDIUM), R3, R4, R5
+**Plan groups:** 1B + 1E + 1F + 1G (`MCD-07`)
+**Findings:** A14-02 (HIGH), A14-06 (MEDIUM, **restated per R4**), A14-07 (MEDIUM, **restated per R5**),
+A14-05 (MEDIUM), F-04 (MEDIUM), F-05 (MEDIUM) — **9 criteria**
+**Amendments binding on this group (D-9):** A14-06 requires *every relevant attempt body AND its associated
+metadata*, including a successful HTTP 200 followed by a later timeout or exception (4 criteria, needs an
+additive attempt-identity column). A14-07 requires scope correctness *enforced inside `collect()`* for every
+invocation and resumed batch, independent of `allowed()` and caller behaviour (4 criteria, needs an additive
+scope-identity column and a changed resume lookup).
 **Files:** `lab/integrity.py` (`collect`, exception path, `synthetic_event`, `hold`), `lab/public.py`
 (`PublicClient.get`, `Collector.baseline`), `tools/source_verify.py`, schema (additive V4)
 
@@ -263,7 +283,7 @@ F-04 (MEDIUM), F-05 (MEDIUM), R3, R4, R5
 5. `source_verify` must reconcile **all** rows bidirectionally and report row ID + reason, including
    `source_effects` orphans and cloned rows.
 
-**Red set:** A14-02 ×4, A14-06 ×3, A14-07 ×2, A14-05 ×2, F-04, F-05.
+**Red set:** A14-02 ×4, A14-06 ×4, A14-07 ×4, A14-05 ×2, F-04, F-05 = **17 criteria**.
 **Green criteria:** all pass; plus wrong-parent, wrong-wallet, duplicate-effect, unbalanced-group,
 Retry-After, empty/malformed body, restart-between-attempts, archive→OPEN, and **hold release attributable
 and reversible**.
@@ -367,7 +387,7 @@ REGRESSION  : full suite still green AND no assertion relaxed (diff reviewed)
 ARTEFACT    : green-phase-results.json bound to DB sha256 + snapshot id
 ```
 
-### 5.2 The 32 criteria
+### 5.2 The 35 criteria
 
 See `evidence/red-phase-results.json` for the machine form. Mapping:
 
@@ -378,27 +398,26 @@ See `evidence/red-phase-results.json` for the machine form. Mapping:
 | A14-03 | 3 | 3 HIGH |
 | A14-04 | 2 | 1 HIGH, 1 MEDIUM |
 | A14-05 | 2 | 2 MEDIUM |
-| A14-06 | 3 | 3 MEDIUM |
-| A14-07 | 2 | 2 MEDIUM |
+| A14-06 | 4 | 4 MEDIUM |
+| A14-07 | 4 | 4 MEDIUM |
 | A14-08 | 2 | 2 LOW |
 | A14-09 | 1 | 1 MEDIUM |
 | A14-10 | 3 | 2 MEDIUM, 1 LOW |
 | F-02, F-03, F-04, F-05 | 4 | 4 MEDIUM |
-| **Total** | **32** | |
+| **Total** | **35** | |
 
 ### 5.3 Red-phase result — the key evidence of this run
 
 `tools/acceptance_suite.py` run against a pristine disposable copy (`runD`), network blocked:
 
 ```
-TOTAL 32   PASS 0   FAIL 32   -> phase=RED
+TOTAL 35   PASS 0   FAIL 35   -> phase=RED
 ```
 
-**Every one of the 32 demanded invariants is violated by the current snapshot.** This is the artefact that
+**Every one of the 35 demanded invariants is violated by the current snapshot.** This is the artefact that
 was missing: a green future run now means something, because the same tests are *known* red today.
 
-**The suite found four real defects in itself before it found them in CopyLab — and one in my own audit
-report.** Full disclosure, because a harness nobody validated is worse than no harness:
+**The suite found six real defects in itself before trusting it — and one in my own audit report.** Full disclosure, because a harness nobody validated is worse than no harness:
 
 | # | Self-defect | How it surfaced | Fix |
 |---|---|---|---|
@@ -407,6 +426,7 @@ report.** Full disclosure, because a harness nobody validated is worse than no h
 | 3 | F-04 unioned `first` and `second` samples — a tautology that hides overwrite | passed falsely | now samples **final state only** |
 | 4 | A14-10 asserted "DB bytes unchanged", but a second `Store()` on an **already-migrated** DB writes nothing yet still becomes a **writer** | passed falsely | now asserts the second Store must refuse or be read-only; it writes successfully → FAIL |
 | 5 | **A14-08** numerics claim contradicted by re-measurement | test PASSed while my report said FAIL | report **corrected** (§0.4); new no-affinity test added |
+| 6 | A14-09 probe reported FAIL when its Node dependency was absent | **false red** — right result, wrong reason | dependency restored; probe now errors loudly instead of passing |
 
 Items 2, 3 and 4 are the dangerous class: **they would have produced false green.** They are why R1 (prove
 the test fails pre-fix) is a blocking plan change rather than good practice.
@@ -440,7 +460,7 @@ outside** reviewer can reach an independent conclusion efficiently, without re-d
 | Independent audit | `AUDIT_REPORT_INDEP-AUDIT-01.md` | reproduction + 49 cases + new findings |
 | **This dossier** | `MASTER_COMPLETION/MCD-01.md` | consolidated plan, criteria, blockers |
 | **Red-phase suite** | `MASTER_COMPLETION/tools/acceptance_suite.py` | 32 executable invariants |
-| **Red evidence** | `MASTER_COMPLETION/evidence/red-phase-results.json` | 32/32 failing, with details |
+| **Red evidence** | `MASTER_COMPLETION/evidence/red-phase-results.json` | 35/35 failing, with details |
 | Probe corpus | `MASTER_COMPLETION/evidence/probes/*.py` | my 49 reproduction cases |
 | Probe results | `MASTER_COMPLETION/evidence/results/*.json` | hashed outputs |
 | Reproduction guide | `MASTER_COMPLETION/tools/REPRODUCE.md` | exact commands, isolation, expected results |
@@ -448,7 +468,7 @@ outside** reviewer can reach an independent conclusion efficiently, without re-d
 ### 6.2 What the outside reviewer must do (and why it is cheap now)
 
 1. Verify the archive hash — **one command**.
-2. Re-run the red suite — **one command**; expect `32/32 FAIL`. If any test passes, either the snapshot
+2. Re-run the red suite — **one command**; expect `35/35 FAIL`. If any test passes, either the snapshot
    drifted or the test is defective; both are findings.
 3. Attempt to **falsify** any of the 49 probe cases. My cases are labelled by finding; a counterexample is
    the most valuable thing they can return.
@@ -471,7 +491,7 @@ Ready to execute the moment §9 clears. Each line is a stop gate.
 | Step | Scope | Entry condition | Exit evidence | Who |
 |---|---|---|---|---|
 | S0 | Outside review of `INDEP-AUDIT-01` + this dossier | package delivered | named sign-off or documented rejection | **external reviewer** |
-| S1 | User approves **G1 only** | S0 signed | written authorisation | **you** |
+| S1 | User approves **G1 only** (= plan 1A; see `MCD-07`) | S0 signed | written authorisation | **you** |
 | S2 | G1 design doc (no code) | S1 | design reviewed | implementer |
 | S3 | G1 red re-confirm → fix → green → review | S2 | `green-G1.json` bound to bytes | implementer + reviewer |
 | S4 | User approves G2 | S3 | written authorisation | **you** |
@@ -491,12 +511,16 @@ whose duration depends on third parties. S14 cannot be compressed by effort.
 
 | ID | Item | Severity | Status | Owner |
 |---|---|---|---|---|
-| **GOV-01** | **Directive §2 truncated at "No live trading,"** — full safety list not received; §3 invariants compiled from the strictest available sources | **HIGH** (scope ambiguity) | **BLOCKED on you** | you |
+| **GOV-01** | **Directive §2 truncated at "No live trading,"** — full safety list not received; §3 invariants compiled from the strictest available sources | **HIGH** (scope ambiguity) | **BLOCKED on owner** | owner |
 | GOV-02 | Outside-the-harness reviewer not engaged | HIGH | BLOCKED | you |
 | GOV-03 | Red-phase harness not yet adopted as the project's acceptance instrument (R1/R2) | HIGH | OPEN | implementer |
 | GOV-04 | F-01…F-09 not yet entered in `MASTER_DEFECT_REGISTER.md` | MEDIUM | OPEN | implementer |
 | GOV-05 | INDEP-AUDIT-01 §0.4 correction not yet acknowledged in the audit record | MEDIUM | OPEN | reviewer + you |
 | GOV-06 | Evidence provenance binding (R9/F-02) not implemented, so no gate artefact is byte-attributable yet | MEDIUM | OPEN | implementer |
+| **GOV-09** | G2 design doc must specify attempt-identity **and** scope-identity schema before code (D-9/R4,R5) | MEDIUM | OPEN | implementer, post-approval |
+| **GOV-10** | External reviewer to confirm R4/R5 restatements are correctly encoded in criteria #18–#25 | MEDIUM | OPEN | reviewer |
+| **GOV-12** | 1A–1H ↔ G1–G6 numbering ambiguity | MEDIUM | **CLOSED** — `MCD-07.md` | resolved |
+| **GOV-08** | R1–R10 disposition | HIGH | **CLOSED** by D-9 | resolved |
 
 **I have not edited `MASTER_DEFECT_REGISTER.md` or `MASTER_REMEDIATION_PLAN.md`.** GOV-03/04/05 are requests
 to their owners, consistent with INV-11 (append, never delete).
@@ -567,7 +591,7 @@ the plan can be called approved. This is the item that turns "REVISE PLAN" into 
 ## 12. Closing statement
 
 I have completed every piece of preparation that does not require approval: state verification, reconciliation,
-one consolidated plan, 32 testable criteria, a validated red→green harness (**32/32 red, self-tested, one of
+one consolidated plan, 35 testable criteria, a validated red→green harness (**35/35 red, self-tested, one of
 my own audit claims corrected**), a staged external-review package, 11 enumerated blockers and an armed
 sequence.
 
@@ -584,7 +608,7 @@ Phase 0 remains **NOT SATISFIED**. Phase 1A remains **NOT AUTHORISED**.
 | Artefact | Path | Cases/Lines |
 |---|---|---|
 | This dossier | `MASTER_COMPLETION/MCD-01.md` | — |
-| Red-phase suite | `MASTER_COMPLETION/tools/acceptance_suite.py` | 32 tests |
+| Red-phase suite | `MASTER_COMPLETION/tools/acceptance_suite.py` | 35 tests |
 | Red-phase result | `MASTER_COMPLETION/evidence/red-phase-results.json` | 32 fail |
 | Reproduction guide | `MASTER_COMPLETION/tools/REPRODUCE.md` | — |
 | Probe corpus | `MASTER_COMPLETION/evidence/probes/` | 5 files |

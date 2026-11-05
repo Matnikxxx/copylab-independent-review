@@ -1,9 +1,9 @@
 {
   "suite": "copylab-red-phase-acceptance",
   "snapshot_head": "288a69f64c24438cfe69ea176e6f3d6ce7333499",
-  "total": 32,
+  "total": 35,
   "passed": 0,
-  "failed_or_error": 32,
+  "failed_or_error": 35,
   "expected_against_prefix_snapshot": "failed_or_error == total",
   "phase": "RED",
   "cases": [
@@ -147,9 +147,17 @@
       "finding": "A14-06",
       "test": "all_failed_attempt_bodies_retained",
       "severity": "MEDIUM",
-      "invariant": "All three received retry bodies must be durable after total failure",
+      "invariant": "Every received attempt body AND its metadata must be durable after total failure (R4 AMENDED)",
       "result": "FAIL",
-      "detail": "durable bodies=['body-3'] (expected all 3)"
+      "detail": "1 durable rows for 3 received attempts: ['body-3']"
+    },
+    {
+      "finding": "A14-06",
+      "test": "attempt_order_and_metadata_distinguishable",
+      "severity": "MEDIUM",
+      "invariant": "Concurrent same-body attempts must remain individually distinguishable with metadata (R4 AMENDED)",
+      "result": "FAIL",
+      "detail": "1 rows for 3 attempts with identical bodies (attempt identity lost)"
     },
     {
       "finding": "A14-06",
@@ -163,9 +171,17 @@
       "finding": "A14-06",
       "test": "successful_body_survives_later_failure",
       "severity": "MEDIUM",
-      "invariant": "A successful response received before a later failure must remain durable",
+      "invariant": "An HTTP 200 body received before a later timeout must survive WITH its success metadata (R4 AMENDED)",
       "result": "FAIL",
-      "detail": "durable bodies=['bad-504']; the successful body was destroyed"
+      "detail": "successful body destroyed; durable=['bad-504']"
+    },
+    {
+      "finding": "A14-07",
+      "test": "collect_enforces_scope_without_allowed",
+      "severity": "MEDIUM",
+      "invariant": "collect() itself must reject/isolate a scope mismatch, independent of allowed() or callers (R5 AMENDED)",
+      "result": "FAIL",
+      "detail": "scope mismatch neither rejected nor forked: reused pending batch, sent status='CLOSED' for a requested OPEN scope"
     },
     {
       "finding": "A14-07",
@@ -173,7 +189,15 @@
       "severity": "MEDIUM",
       "invariant": "A completed walk must not be published as the requested scope's frontier",
       "result": "FAIL",
-      "detail": "frontier published for a CLOSED walk under an OPEN request: [{'wallet': 'fixture-wallet', 'endpoint': '/v2/positions', 'batch': 1, 'captured_at': 1793884422.9590044, 'coverage': 'captured pages only; late inserts and source completeness unproven'}]"
+      "detail": "frontier published for a CLOSED walk under an OPEN request: [{'wallet': 'fixture-wallet', 'endpoint': '/v2/positions', 'batch': 1, 'captured_at': 1793885252.7357094, 'coverage': 'captured pages only; late inserts and source completeness unproven'}]"
+    },
+    {
+      "finding": "A14-07",
+      "test": "scope_identity_persisted_per_batch",
+      "severity": "MEDIUM",
+      "invariant": "Each batch must persist an explicit scope identity so resume validity never depends on wallet+endpoint (R5 AMENDED)",
+      "result": "FAIL",
+      "detail": "collection_batches has no explicit scope-identity column (columns=['id', 'wallet', 'endpoint', 'params', 'started', 'finished', 'status', 'next_cursor', 'page_number', 'error', 'coverage']); resume validity rests on wallet+endpoint alone"
     },
     {
       "finding": "A14-07",
