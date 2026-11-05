@@ -9,6 +9,13 @@ artefacts and are treated here as **inputs to be revised**, not replaced.
 **Snapshot:** HEAD `288a69f64c24438cfe69ea176e6f3d6ce7333499` / archive
 `f19437429a3dc239813840628920496123bf5fc2be3f0bf6c3af3fd2f9b11c23` (re-verified, pristine)
 
+> **OWNER DECISIONS APPLIED 2026-11-05** — see `MCD-04.md` for the authoritative ledger.
+> D-1 TD-01 transmission record (no relaxation) · D-2 A14-08 correction accepted → `MCD-03.md`
+> D-3 external review mandatory · D-4 32-case suite **adopted provisionally** → `MCD-02.md`
+> **D-5 G1 explicitly NOT AUTHORISED** · D-6 preservation standing · D-7 Phase 0 must not be marked complete
+> D-8 single coordinated programme authorisation defined in `MCD-04` §7
+> Gate state unchanged: **Phase 0 NOT SATISFIED · Phase 1A NOT AUTHORISED.**
+
 ---
 
 ## 0. Read this before anything else
@@ -19,9 +26,11 @@ The directive ended mid-sentence at:
 
 > "CopyLab must remain strictly paper-only. - No live trading,"
 
-**Sections 3 onward of your safety list never arrived.** I have not guessed at the missing bullets and I
-have not treated their absence as permission. I have applied the **strictest reading available**, derived
-from three sources that are already binding on this project:
+**Sections 3 onward of your safety list never arrived.** You have since confirmed the original directive
+contained the complete requirements, so this is recorded as a **transmission discrepancy, TD-01**
+(`MCD-04.md` §3), not a content dispute. I have not guessed at the missing bullets, not reconstructed them
+from memory, and not treated their absence as permission. I have applied the **strictest reading available**,
+derived from sources that are already binding on this project and that I actually hold:
 
 1. the archive's own transfer instructions (`copylab-external-review-INSTRUCTIONS.md`);
 2. Audit 14's method restrictions (`docs/phase0-audit14/AUDIT_14.md`);
@@ -29,8 +38,10 @@ from three sources that are already binding on this project:
 
 **Every one of those is more restrictive than "paper-only" alone**, so the truncation cannot have widened
 my authority. If your missing bullets were *permissive* in any respect, they are not honoured — but no
-permissive bullet can be consistent with a snapshot whose own gate is "Phase 0 BLOCKED". Please re-send the
-full list so the governance pack can cite it verbatim; §11 records this as open item **GOV-01**.
+permissive bullet can be consistent with a snapshot whose own gate is "Phase 0 BLOCKED". `MCD-04` §4 shows
+that all eleven operative invariants (`INV-01`…`INV-11`) trace to a source in my possession, so the
+truncation reduces the *completeness* of the safety list, not the *strength* of what is enforced. **GOV-01
+stays BLOCKED** until the full text is supplied; any invariant it reveals will be reconciled upward only.
 
 ### 0.2 What I did and did not do in this run
 
@@ -540,19 +551,18 @@ trading system until B and C are evidenced, and never as a real-money system (IN
 
 ## 11. Immediate asks
 
-Only five, all small, none routine:
+Five when this dossier was first written. **Two are now closed by your decisions, three remain**, each a single action:
 
-1. **Re-send §2 of the directive in full** (GOV-01). Until then I am operating on a reconstructed safety
-   list and will say so in every artefact.
-2. **Confirm or reject my §0.4 correction** to A14-08 (GOV-05). I would rather be corrected twice than be
-   wrong once in the record.
-3. **Engage an outside reviewer** (GOV-02) with the §6 package. Everything is staged; it is one command to
-   verify and one to reproduce.
-4. **Decide on adopting the red-phase harness** (R1/R2/GOV-03) as the project's acceptance instrument. This
-   is the single highest-leverage change available, because it makes every future green meaningful.
-5. **Nothing else.** Do not authorise G1 yet — blockers 1 and 2 make that premature.
+| # | Ask | Status after your decisions |
+|---|---|---|
+| 1 | Re-send directive §2 in full | **OUTSTANDING** — TD-01 / GOV-01; the only invariant-completeness gap |
+| 2 | Confirm or reject the A14-08 correction | **DONE** — accepted (D-2); evidence in `MCD-03.md` §5 |
+| 3 | Engage an outside reviewer with the §8 package | **OUTSTANDING** — GOV-02; package complete in `MCD-05.md` |
+| 4 | Adopt the red-phase harness as acceptance instrument | **DONE, PROVISIONAL** — D-4; criteria specified in `MCD-02.md` |
+| 5 | Do not authorise G1 yet | **HONOURED** — D-5; G1 remains NOT AUTHORISED |
 
----
+**GOV-08 remains open:** R1–R10 must be dispositioned (accepted, rejected with reasoning, or amended) before
+the plan can be called approved. This is the item that turns "REVISE PLAN" into a re-reviewable plan.
 
 ## 12. Closing statement
 

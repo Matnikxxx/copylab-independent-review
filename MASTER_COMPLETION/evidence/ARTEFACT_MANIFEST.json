@@ -2,8 +2,38 @@
   "artefacts": [
     {
       "path": "MCD-01.md",
-      "bytes": 34231,
-      "sha256": "1943c3cefcbdfe1d208b84012e637ac524a813e74c51e13f7a0e9698cdfba1bf"
+      "bytes": 35408,
+      "sha256": "47a6d722f1281551ab6ebf57b55510223f6533de89cbd9ebffec8ac2300c1748"
+    },
+    {
+      "path": "MCD-02.md",
+      "bytes": 38686,
+      "sha256": "26e2de2e12a4048b34b080d1bf377357767222b743e4ba0ef76e2228cd1f7347"
+    },
+    {
+      "path": "MCD-03.md",
+      "bytes": 8490,
+      "sha256": "948493151fc96f709fc4bf53151609f9a183a04bdbba7328fd40b4c46fb7d3e0"
+    },
+    {
+      "path": "MCD-04.md",
+      "bytes": 15118,
+      "sha256": "1376afe7b91eedd9eee2bce484ac0b3481b722270d957f6ff9ce31fd1ce59fa0"
+    },
+    {
+      "path": "MCD-05.md",
+      "bytes": 11523,
+      "sha256": "b8f5446a9f34048f41a5c0be9558438fb87dd035310494d536e9cefa0de2b273"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9112,
+      "sha256": "8c882d22fa204b88c795e0dc3f50d9a142827c22ab980a61ecac8b9bb808ad0c"
+    },
+    {
+      "path": "evidence/ARTEFACT_MANIFEST.json",
+      "bytes": 3914,
+      "sha256": "60602be1498f8d30211ab73c66dc3e5361388aebcfae57334b4a06665bf6a07c"
     },
     {
       "path": "evidence/probes/a1409.js",
@@ -71,9 +101,18 @@
       "sha256": "0a0f22138931e45dfa0d262cff6538ba19843944472d030f7815ec508bfe65da"
     }
   ],
-  "count": 14,
+  "count": 20,
   "snapshot_head": "288a69f64c24438cfe69ea176e6f3d6ce7333499",
   "archive_sha256": "f19437429a3dc239813840628920496123bf5fc2be3f0bf6c3af3fd2f9b11c23",
-  "red_phase": "32/32 FAIL",
+  "snapshot_files_verified": "156/156, 0 mismatches",
+  "red_phase": "32/32 FAIL (phase RED)",
+  "gates": {
+    "phase0": "NOT SATISFIED",
+    "phase1a": "NOT AUTHORISED",
+    "g1": "NOT AUTHORISED",
+    "red_suite": "ADOPTED PROVISIONAL",
+    "external_review": "MANDATORY OUTSTANDING"
+  },
+  "owner_decisions": "D-1..D-8 in MCD-04.md",
   "generated": "2026-11-05"
 }
